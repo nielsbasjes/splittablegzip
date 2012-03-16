@@ -154,7 +154,8 @@ import org.apache.hadoop.io.compress.SplittableCompressionCodec;
  * For example: http://stackoverflow.com/questions/3960651</li>
  * <li>Decompress the original gzipped file and compress using a different
  * splittable codec.<br/>
- * For example {@link BZip2Codec} or not compressing at all</li>
+ * For example {@link org.apache.hadoop.io.compress.BZip2Codec} or not 
+ * compressing at all</li>
  * </ol>
  * <hr>
  * <b>Implementation notes</b><br>
