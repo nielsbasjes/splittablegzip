@@ -225,10 +225,10 @@ public class SplittableGzipCodec extends GzipCodec implements
       final InputStream seekableIn, final Decompressor decompressor,
       final long start, final long end,
       final READ_MODE readMode) // Ignored by this codec
-      throws IOException {
+    throws IOException {
     return new SplittableGzipInputStream(createInputStream(seekableIn,
         decompressor), start, end, getConf().getInt("io.file.buffer.size",
-        DEFAULT_FILE_BUFFER_SIZE));
+          DEFAULT_FILE_BUFFER_SIZE));
   }
 
   // -------------------------------------------
@@ -272,7 +272,7 @@ public class SplittableGzipCodec extends GzipCodec implements
 
     public SplittableGzipInputStream(final CompressionInputStream in,
         final long start, final long end, final int bufferSize)
-        throws IOException {
+      throws IOException {
       super(in, start, end);
 
       // We MUST have the option of slowing down the reading of data.
@@ -383,7 +383,7 @@ public class SplittableGzipCodec extends GzipCodec implements
 
     @Override
     public int read(final byte[] b, final int off, final int len)
-        throws IOException {
+      throws IOException {
       final long currentRealPos = getRealPos();
       int maxBytesToRead = Math.min(bufferSize, len);
 
