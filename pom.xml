@@ -1,38 +1,159 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
 
-	<groupId>nl.basjes.hadoop</groupId>
-	<artifactId>hadoop-splittablegzip</artifactId>
-	<version>1.0-0.23.0-cdh4b1</version>
-	<packaging>jar</packaging>
+  <groupId>nl.basjes.hadoop</groupId>
+  <artifactId>hadoop-splittablegzip</artifactId>
+  <!-- Do NOT use a '-' in the version number !! -->
+  <version>1.0</version>
+  <packaging>jar</packaging>
 
-	<name>Splittable gzip</name>
-	<url>http://niels.basjes.nl/gzip</url>
+  <name>Splittable Gzip codec</name>
+  <url>http://niels.basjes.nl/splittable-gzip</url>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
+  <properties>
+    <compileSource>1.6</compileSource>
+    <targetJdk>1.6</targetJdk>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
 
-	<dependencies>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>4.10</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.hadoop</groupId>
-			<artifactId>hadoop-common</artifactId>
-			<version>0.23.1</version>
-		</dependency>
-	</dependencies>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.8.1</version>
-			</plugin>
-		</plugins>
-	</build>
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.10</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.hadoop</groupId>
+      <artifactId>hadoop-common</artifactId>
+      <version>0.23.1</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.8.1</version>
+        <executions>
+          <execution>
+            <id>javadoc-jar</id>
+            <phase>package</phase>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-pmd-plugin</artifactId>
+        <version>2.7.1</version>
+        <configuration>
+          <linkXref>true</linkXref>
+          <!-- <rulesets> <ruleset> /pmd-ruleset.xml </ruleset> </rulesets> -->
+          <executions>
+            <execution>
+              <phase>package</phase>
+              <goals>
+                <goal>cpd-check</goal> <!-- Fail the build if copy/paste detector fails -->
+              </goals>
+              <configuration>
+                <verbose>true</verbose>
+              </configuration>
+            </execution>
+          </executions>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>findbugs-maven-plugin</artifactId>
+        <version>2.0.1</version>
+        <configuration>
+          <targetJdk>1.6</targetJdk>
+        </configuration>
+        <executions>
+          <execution>
+            <phase>package</phase>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>rpm-maven-plugin</artifactId>
+        <version>2.0.1</version>
+        <configuration>
+          <copyright>Apache License v2.0</copyright>
+          <packager>Niels Basjes</packager>
+          <group>Development/Libraries</group>
+          <needarch>noarch</needarch>
+          <description>
+This codec offers a trade off between "spent resources" and "scalability" 
+when reading Gzipped input files by simply always starting at the beginning 
+of the file. So in general this "splittable" Gzip codec will WASTE CPU time and
+FileSystem IO (HDFS) and probably other system resources (Network)
+too to reduce the "wall clock" time in some real-life situations.</description>
+          <release>1</release>
+          <mappings>
+            <mapping>
+              <directory>/usr/lib/hadoop</directory>
+              <username>root</username>
+              <groupname>root</groupname>
+              <sources>
+                <source>
+                  <location>target/${project.build.finalName}.jar</location>
+                </source>
+              </sources>
+            </mapping>
+
+            <mapping>
+              <directory>/usr/share/doc/${project.build.finalName}/apidocs</directory>
+              <username>root</username>
+              <groupname>root</groupname>
+              <sources>
+                <source>
+                  <location>target/apidocs</location>
+                </source>
+              </sources>
+            </mapping>
+
+            <mapping>
+              <directory>/usr/share/doc/${project.build.finalName}/</directory>
+              <username>root</username>
+              <groupname>root</groupname>
+              <sources>
+                <source>
+                  <location>src/main/resources/mapred-site.xml.example</location>
+                </source>
+              </sources>
+            </mapping>
+
+          </mappings>
+          
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>attached-rpm</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+  </build>
+
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>2.8.1</version>
+      </plugin>
+    </plugins>
+  </reporting>
 </project>

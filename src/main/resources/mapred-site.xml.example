@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<configuration>
+
+  <!-- The regular GzipCodec must be removed and replaced by nl.basjes.hadoop.io.compress.SplittableGzipCodec -->
+  <property>
+    <name>io.compression.codecs</name>
+    <value>org.apache.hadoop.io.compress.DefaultCodec,nl.basjes.hadoop.io.compress.SplittableGzipCodec,org.apache.hadoop.io.compress.BZip2Codec,org.apache.hadoop.io.compress.DeflateCodec,org.apache.hadoop.io.compress.SnappyCodec,org.apache.hadoop.io.compress.Lz4Codec</value>
+    <description>A list of the compression codec classes that can be used 
+               for compression/decompression.</description>
+</property>
+
+  <!-- How big must the split be? -->
+  <property>
+    <name>mapreduce.input.fileinputformat.split.maxsize</name>
+    <value>100000</value>
+  </property>
+
+</configuration>

@@ -99,7 +99,7 @@ import org.apache.hadoop.io.compress.SplittableCompressionCodec;
  * This can be done by changing the <b>io.compression.codecs</b> property to
  * something like this:<br>
  * <i>org.apache.hadoop.io.compress.DefaultCodec,
- * org.apache.hadoop.io.compress.SkipSeekSplittableGzipCodec,
+ * nl.basjes.hadoop.io.compress.SplittableGzipCodec,
  * org.apache.hadoop.io.compress.BZip2Codec</i><br>
  * </li>
  * <li>Set the split size to something that works in your situation. This can be
@@ -281,7 +281,7 @@ public class SplittableGzipCodec extends GzipCodec implements
         this.in = (ThrottleableDecompressorStream) in;
       } else {
         this.in = null; // Permanently cripple this instance ('in' is final) .
-        throw new IOException("The SkipSeekSplittableGzipCodec relies on"
+        throw new IOException("The SplittableGzipCodec relies on"
             + " functionality in the ThrottleableDecompressorStream class.");
       }
 
@@ -317,7 +317,7 @@ public class SplittableGzipCodec extends GzipCodec implements
           // An EOF while seeking for the START of the split !?!?
           throw new EOFException("Unexpected end of input stream when"
               + " seeking for the start of the split in" 
-              + " SkipSeekSplittableGzipCodec:"
+              + " SplittableGzipCodec:"
               + " start=" + start + " adjustedStart=" + start + " position="
               + getPos());
         }
