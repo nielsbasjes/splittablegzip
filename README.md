@@ -145,7 +145,9 @@ There were two major hurdles that needed to be solved to make this work:
   getBytesRead return a new value. "Read" means: read from disk an loaded into 
   the decompressor but does NOT yet mean that the uncompressed information was read.
 
-  The solution employed is that when we get close to the end of the split we switch to a crawling mode. This simply means that the disk reads are reduced to 1 byte, making the position reporting also 1 byte accurate.
+  The solution employed is that when we get close to the end of the split we switch 
+  to a crawling mode. This simply means that the disk reads are reduced to 1 byte, 
+  making the position reporting also 1 byte accurate.
   This was implemented in the ThrottleableDecompressorStream.
   
 * **The input is compressed.**
@@ -164,6 +166,7 @@ There were two major hurdles that needed to be solved to make this work:
   what position is reported through the getPos(). 
   The state is essentially selected on the distance to the end.
   These states are:
+
   *  REPORT
 
      Normally read the bytes and report the actual disk position in the getPos().
