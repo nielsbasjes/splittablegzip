@@ -17,12 +17,11 @@
  */
 package nl.basjes.hadoop.io.compress;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Random;
+
+import junit.framework.TestCase;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -46,7 +45,7 @@ import org.junit.Test;
  * This verifies if the seams between the splits are 100% accurate by comparing
  * all splits with a non-splitted read of the same input.
  */
-public class TestSplittableCodecSeams {
+public class TestSplittableCodecSeams extends TestCase {
 
   private static final Log LOG = LogFactory
       .getLog(TestSplittableCodecSeams.class);
@@ -157,6 +156,8 @@ public class TestSplittableCodecSeams {
 
     final Text refLine = new Text();
     final Decompressor refDcmp = CodecPool.getDecompressor(codec);
+    assertNotNull("Unable to load the decompressor for codec \""+codec.getClass().getName()+"\"", refDcmp);
+
     final SplitCompressionInputStream refStream = codec
       .createInputStream(fs.open(infile.getPath()), refDcmp, 0, inputLength,
         SplittableCompressionCodec.READ_MODE.BYBLOCK);
@@ -164,6 +165,7 @@ public class TestSplittableCodecSeams {
 
     final Text line = new Text();
     final Decompressor dcmp = CodecPool.getDecompressor(codec);
+    assertNotNull("Unable to load the decompressor for codec \""+codec.getClass().getName()+"\"", refDcmp);
 
     try {
       long start = 0;
