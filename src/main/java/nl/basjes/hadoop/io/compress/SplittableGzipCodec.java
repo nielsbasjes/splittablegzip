@@ -219,13 +219,22 @@ import org.apache.hadoop.io.compress.SplittableCompressionCodec;
 public class SplittableGzipCodec extends GzipCodec implements
     SplittableCompressionCodec {
 
+    private static final Log LOG =
+            LogFactory.getLog(SplittableGzipCodec.class);
+
   private static final int DEFAULT_FILE_BUFFER_SIZE = 4 * 1024; // 4 KiB
+
+  public SplittableGzipCodec() {
+    super();
+    LOG.info("Creating instance of SplittableGzipCodec");
+  }
 
   public SplitCompressionInputStream createInputStream(
       final InputStream seekableIn, final Decompressor decompressor,
       final long start, final long end,
       final READ_MODE readMode) // Ignored by this codec
     throws IOException {
+    LOG.info("Creating SplittableGzipInputStream (range = [" + start + "," + end + "])");
     return new SplittableGzipInputStream(createInputStream(seekableIn,
         decompressor), start, end, getConf().getInt("io.file.buffer.size",
           DEFAULT_FILE_BUFFER_SIZE));
@@ -260,9 +269,6 @@ public class SplittableGzipCodec extends GzipCodec implements
     // When setting log4j into TRACE mode we will report massive amounts
     // of info when this many bytes near the relevant areas.
     private static final int TRACE_REPORTING_DISTANCE = 64;
-
-    private static final Log LOG = 
-        LogFactory.getLog(SplittableGzipCodec.class);
 
     private final ThrottleableDecompressorStream in;
     private final int crawlDistance;
