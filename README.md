@@ -16,7 +16,7 @@ First of all this only works with Hadoop 0.21 and up because this depends on
 the presence of the SplittableCompressionCodec interface.
 So Hadoop 1.x is not yet supported (waiting for [HADOOP-7823][HADOOP-7823]).
 
-I tested it with Cloudera CDH4b1.
+I tested it with Cloudera CDH 4.5.0.
 
 ##Downloads
 Currently it can only be downloaded via github.
@@ -24,6 +24,13 @@ Currently it can only be downloaded via github.
 [https://github.com/nielsbasjes/splittablegzip][github]
 
 Running mvn package automatically generates an RPM.
+
+##Building
+On CDH the build fails if the native gzip could not be loaded for running the unit tests.
+To fix this you need to install the native package and set the environment so it can find them for your platform.
+I.e. Do something like this before starting the build or loading your IDE.
+
+   export LD_LIBRARY_PATH=/usr/lib/hadoop-0.20/lib/native/Linux-amd64-64
 
 ##Installation
 
@@ -39,7 +46,7 @@ Running mvn package automatically generates an RPM.
    **mapreduce.input.fileinputformat.split.minsize** and/or
    **mapreduce.input.fileinputformat.split.maxsize**.
 
-#Choosing the coniguration settings
+#Choosing the configuration settings
 ##How it works
 For each "split" the gzipped input file is read from the beginning of the file 
 till the point where the split starts, thus reading, decompressing and 
