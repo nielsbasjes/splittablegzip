@@ -15,7 +15,25 @@ The result was a file that was 1397956862 bytes in size (i.e. just below 1.4GB).
 
 
 
--rw-rw-r--.  1 nbasjes nbasjes 139796017 Feb 11 17:39 words.txt.gz
+-rw-rw-r--.  1 nbasjes nbasjes 1101900000 Feb 11 17:39 words.txt.gz
+
+Splitsize | Splits | Elapsed | Avg. Map Time | Total Map Time
+ --:|--:|--:|--:|--:|
+1101900000 |  1 |   sec |   sec |   sec |
+  70000000 |  2 |    sec |    sec |   sec |
+ 50000000 |  3 |    sec |    sec |   sec |
+ 35000000 |  4 |    sec |    sec |   sec |
+ 28000000 |  5 |    sec |    sec |   sec | 
+ 25000000 |  6 |    sec |    sec |   sec |
+ 20000000 |  7 |    sec |    sec |   sec |
+ 17500000 |  8 |    sec |    sec |   sec |
+ 15000000 | 10 |    sec |    sec |   sec |
+ 12500000 | 12 |    sec |    sec |   sec |
+ 11500000 | 13 |    sec |    sec |   sec |
+ 10000000 | 14 |    sec |    sec |   sec |
+  5000000 | 28 |    sec |    sec |   sec |
+  2500000 | 56 |    sec |     sec |   sec | 
+
 
 Splitsize | Splits | Elapsed | Avg. Map Time | Total Map Time
  --:|--:|--:|--:|--:|
