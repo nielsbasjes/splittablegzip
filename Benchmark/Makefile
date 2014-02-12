@@ -14,7 +14,7 @@ wordcount-normal.txt: words-100K.txt.gz target/wordcount-1.0-job.jar
 wordcount-%.txt: words-100K.txt.gz target/wordcount-1.0-job.jar
 	( \
 	SPLITS=$$(echo $@| sed 's/wordcount-\(.*\).txt/\1/' ) ;\
-    SPLITSIZE=$(echo "(${FILESIZE}/${I})+1" | bc) ; \
+	SPLITSIZE=$(echo "(${FILESIZE}/${I})+1" | bc) ; \
 	-hdfs dfs -rm -R wordcount-$${SPLITS} ; \
 	yarn jar target/wordcount-1.0-job.jar nl.basjes.hadoop.examples.WordCount $< wordcount-$${SPLITS} -s $${SIZE} ; \
 	hdfs dfs -text wordcount-$${SIZE}/part-r-* | sort > wordcount-$${SPLITS}.txt \
