@@ -14,10 +14,11 @@ wordcount-normal.txt: words-100K.txt.gz target/wordcount-1.0-job.jar
 wordcount-%.txt: words-100K.txt.gz target/wordcount-1.0-job.jar
 	( \
 	SPLITS=$$(echo $@| sed 's/wordcount-\(.*\).txt/\1/' ) ;\
-	SPLITSIZE=$(echo "(${FILESIZE}/${I})+1" | bc) ; \
-	-hdfs dfs -rm -R wordcount-$${SPLITS} ; \
-	yarn jar target/wordcount-1.0-job.jar nl.basjes.hadoop.examples.WordCount $< wordcount-$${SPLITS} -s $${SIZE} ; \
-	hdfs dfs -text wordcount-$${SIZE}/part-r-* | sort > wordcount-$${SPLITS}.txt \
+	FILESIZE=$$(stat -c%s "$<"); \
+	SPLITSIZE=$$(echo "$${FILESIZE}/$${SPLITS} +1" | bc) ; \
+	hdfs dfs -rm -R wordcount-$${SPLITS} ; \
+	yarn jar target/wordcount-1.0-job.jar nl.basjes.hadoop.examples.WordCount $< wordcount-$${SPLITS} -s $${SPLITSIZE} ; \
+	hdfs dfs -text wordcount-$${SPLITS}/part-r-* | sort > wordcount-$${SPLITS}.txt ; \
 	)
 
 words-100K.txt.gz: words.txt.gz
@@ -29,7 +30,7 @@ words.txt.gz:
 	rpm -qa | sed 's/\./ /g;s/-/ /g' | gzip > $@
 
 clean:: 
-	-rm -f wordcount-*000.txt
+	-rm -f wordcount-*.txt
 
 target/wordcount-1.0-job.jar:
 	mvn package
