@@ -11,6 +11,10 @@ penalty for this scaling out.
 
 This addon for Hadoop makes this possible.
 
+##Benchmark
+I did benchmarking jobs to see how this solution scales and performs.
+The software and the results can be found in the Benchmark folder.
+
 ##Requirements
 First of all this only works with Hadoop 0.21 and up because this depends on 
 the presence of the SplittableCompressionCodec interface.
