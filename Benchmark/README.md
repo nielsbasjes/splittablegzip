@@ -83,7 +83,7 @@ GzipCodec |  1 | 274 sec | 267 sec
   8815201 | 25 |  60 sec |  19 sec
 
 
-##A 140 GB input file doing a wordcount.
+##A 140 MB input file doing a wordcount.
 
 Splitsize | Splits | Elapsed | Avg. Map Time | Total Map Time
  --:|--:|--:|--:|--:|
