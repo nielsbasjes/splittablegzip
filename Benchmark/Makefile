@@ -6,12 +6,12 @@ all:
 clean:: 
 	-rm -f wordcount-normal.txt
 
-wordcount-normal.txt: words-100K.txt.gz target/wordcount-1.0-job.jar
+wordcount-normal.txt: words-20K.txt.gz target/wordcount-1.0-job.jar
 	-hdfs dfs -rm -R wordcount-normal
 	yarn jar target/wordcount-1.0-job.jar nl.basjes.hadoop.examples.WordCount $< wordcount-normal
 	hdfs dfs -text wordcount-normal/part-r-* | sort > wordcount-normal.txt
 
-wordcount-%.txt: words-100K.txt.gz target/wordcount-1.0-job.jar
+wordcount-%.txt: words-20K.txt.gz target/wordcount-1.0-job.jar
 	( \
 	SPLITS=$$(echo $@| sed 's/wordcount-\(.*\).txt/\1/' ) ;\
 	FILESIZE=$$(stat -c%s "$<"); \
@@ -20,6 +20,11 @@ wordcount-%.txt: words-100K.txt.gz target/wordcount-1.0-job.jar
 	yarn jar target/wordcount-1.0-job.jar nl.basjes.hadoop.examples.WordCount $< wordcount-$${SPLITS} -s $${SPLITSIZE} ; \
 	hdfs dfs -text wordcount-$${SPLITS}/part-r-* | sort > wordcount-$${SPLITS}.txt ; \
 	)
+
+words-20K.txt.gz: words.txt.gz
+	for I in `seq 1 20000` ; do cat $< ; done > $@
+	-hdfs dfs -rm $@
+	hdfs dfs -put $@
 
 words-100K.txt.gz: words.txt.gz
 	for I in `seq 1 100000` ; do cat $< ; done > $@
