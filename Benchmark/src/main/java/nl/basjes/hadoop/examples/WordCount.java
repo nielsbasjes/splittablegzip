@@ -82,6 +82,7 @@ public class WordCount extends Configured implements Tool {
                 return -1;
             }
             job.getConfiguration().set("io.compression.codecs", "nl.basjes.hadoop.io.compress.SplittableGzipCodec");
+            job.getConfiguration().setLong("mapreduce.input.fileinputformat.split.minsize", Long.parseLong(args[3])-10000);
             job.getConfiguration().setLong("mapreduce.input.fileinputformat.split.maxsize", Long.parseLong(args[3]));
             job.setJobName("Wordcount-"+args[3]);
         }
