@@ -13,7 +13,11 @@ This addon for Hadoop makes this possible.
 
 ##Benchmark
 I did benchmarking jobs to see how this solution scales and performs.
-The software and the results can be found in the Benchmark folder.
+The software and the results can be found in the [Benchmark](Benchmark) folder.
+
+In general we can say that you win as long as there is unused capacity in your cluster.
+
+![Graph of the results](Benchmark/Benchmark.png)
 
 ##Requirements
 First of all this only works with Hadoop 0.21 and up because this depends on 
