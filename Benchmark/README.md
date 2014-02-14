@@ -55,32 +55,57 @@ GzipCodec  |  1 | 1470 sec  | 1462 sec | 1462 sec |
 ##A 220 MB input file doing a wordcount.
 Splitsize | Splits | Elapsed | Avg. Map Time | Total Map Time
  --:|--:|--:|--:|--:|
-GzipCodec |  1 | 274 sec | 267 sec
-220380001 |  1 | 282 sec | 275 sec
-110190001 |  2 | 156 sec | 150 sec
- 73460001 |  3 | 120 sec | 110 sec
- 55095001 |  4 |  89 sec |  81 sec
- 44076001 |  5 |  70 sec |  64 sec
- 36730001 |  6 |  66 sec |  59 sec
- 31482858 |  7 |  55 sec |  48 sec
- 27547501 |  8 |  53 sec |  44 sec
- 24486667 |  9 |  49 sec |  40 sec
- 22038001 | 10 |  46 sec |  37 sec
- 20034546 | 11 |  44 sec |  35 sec
- 18365001 | 12 |  43 sec |  33 sec
- 16952308 | 13 |  59 sec |  30 sec
- 15741429 | 14 |  57 sec |  29 sec
- 14692001 | 15 |  62 sec |  27 sec
- 13773751 | 16 |  59 sec |  26 sec
- 12963530 | 17 |  56 sec |  26 sec
- 12243334 | 18 |  57 sec |  24 sec
- 11598948 | 19 |  53 sec |  23 sec
- 11019001 | 20 |  54 sec |  22 sec
- 10494286 | 21 |  53 sec |  21 sec
- 10017273 | 22 |  60 sec |  21 sec
-  9581740 | 23 |  58 sec |  20 sec
-  9182501 | 24 |  58 sec |  20 sec
-  8815201 | 25 |  60 sec |  19 sec
+GzipCodec |  1 | 274 sec | 267 sec |  267 sec
+220380001 |  1 | 282 sec | 275 sec |  275 sec
+110190001 |  2 | 156 sec | 150 sec |  300 sec
+ 73460001 |  3 | 120 sec | 110 sec |  330 sec
+ 55095001 |  4 |  89 sec |  81 sec |  324 sec
+ 44076001 |  5 |  70 sec |  64 sec |  320 sec
+ 36730001 |  6 |  66 sec |  59 sec |  354 sec
+ 31482858 |  7 |  55 sec |  48 sec |  336 sec
+ 27547501 |  8 |  53 sec |  44 sec |  352 sec
+ 24486667 |  9 |  49 sec |  40 sec |  360 sec
+ 22038001 | 10 |  46 sec |  37 sec |  370 sec
+ 20034546 | 11 |  44 sec |  35 sec |  385 sec
+ 18365001 | 12 |  43 sec |  33 sec |  396 sec
+ 16952308 | 13 |  59 sec |  30 sec |  390 sec
+ 15741429 | 14 |  57 sec |  29 sec |  406 sec
+ 14692001 | 15 |  62 sec |  27 sec |  405 sec
+ 13773751 | 16 |  59 sec |  26 sec |  416 sec
+ 12963530 | 17 |  56 sec |  26 sec |  442 sec
+ 12243334 | 18 |  57 sec |  24 sec |  432 sec
+ 11598948 | 19 |  53 sec |  23 sec |  437 sec
+ 11019001 | 20 |  54 sec |  22 sec |  440 sec
+ 10494286 | 21 |  53 sec |  21 sec |  441 sec
+ 10017273 | 22 |  60 sec |  21 sec |  462 sec
+  9581740 | 23 |  58 sec |  20 sec |  460 sec
+  9182501 | 24 |  58 sec |  20 sec |  480 sec
+  8815201 | 25 |  60 sec |  19 sec |  475 sec
+  8476154 | 26 |  62 sec |  20 sec |  520 sec
+  8162223 | 27 |  57 sec |  18 sec |  486 sec
+  7870715 | 28 |  64 sec |  18 sec |  504 sec
+  7599311 | 29 |  64 sec |  18 sec |  522 sec
+  7346001 | 30 |  62 sec |  18 sec |  540 sec
+  7109033 | 31 |  61 sec |  17 sec |  527 sec
+  6886876 | 32 |  62 sec |  16 sec |  512 sec
+  6678182 | 33 |  62 sec |  16 sec |  528 sec
+  6481765 | 34 |  64 sec |  16 sec |  544 sec
+  6296572 | 35 |  70 sec |  16 sec |  560 sec
+  6121667 | 36 |  64 sec |  16 sec |  576 sec
+  5956217 | 37 |  68 sec |  15 sec |  555 sec
+  5799474 | 38 |  67 sec |  15 sec |  570 sec
+  5650770 | 39 |  70 sec |  15 sec |  585 sec
+  5509501 | 40 |  72 sec |  15 sec |  600 sec
+  5375122 | 41 |  72 sec |  15 sec |  615 sec
+  5247143 | 42 |  69 sec |  14 sec |  588 sec
+  5125117 | 43 |  73 sec |  14 sec |  602 sec
+  5008637 | 44 |  71 sec |  14 sec |  616 sec
+  4897334 | 45 |  72 sec |  13 sec |  585 sec
+  4790870 | 46 |  72 sec |  13 sec |  598 sec
+  4688937 | 47 |  72 sec |  13 sec |  611 sec
+  4591251 | 48 |  77 sec |  13 sec |  624 sec
+  4497552 | 49 |  83 sec |  14 sec |  686 sec
+  4407601 | 50 |  85 sec |  13 sec |  650 sec
 
 
 ##A 140 MB input file doing a wordcount.
