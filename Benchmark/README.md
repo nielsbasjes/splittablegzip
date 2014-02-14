@@ -23,6 +23,8 @@ All output files were checked and resulted in the same md5 of the output file.
 #Results
 ##A 1.1 GB input file doing a wordcount.
 
+![Graph of the results](Benchmark.png)
+
 Splitsize | Splits | Elapsed | Avg. Map Time | Total Map Time
  --:|--:|--:|--:|--:|
 GzipCodec  |  1 | 1470 sec  | 1462 sec | 1462 sec |
@@ -39,7 +41,7 @@ GzipCodec  |  1 | 1470 sec  | 1462 sec | 1462 sec |
  100172728 | 11 |  171 sec  |  152 sec | 1672 sec |
   91825001 | 12 |  175 sec  |  147 sec | 1764 sec |
   84761539 | 13 |  264 sec  |  136 sec | 1768 sec |
-  78707143 | 14 |  248 sec  |  125 sec | 1750 sec |  
+  78707143 | 14 |  248 sec  |  125 sec | 1750 sec |
   73460001 | 15 |  246 sec  |  118 sec | 1770 sec |
   68868751 | 16 |  235 sec  |  111 sec | 1776 sec |
   64817648 | 17 |  253 sec  |  108 sec | 1836 sec |
