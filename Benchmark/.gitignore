@@ -1,3 +1,9 @@
 target
 words*.txt.gz
 wordcount-*.txt
+Output-*.txt
+Results-*.txt
+Results.txt
+*.swp
+*.bak
+*~

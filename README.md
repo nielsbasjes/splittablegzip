@@ -17,7 +17,7 @@ The software and the results can be found in the [Benchmark](Benchmark) folder.
 
 In general we can say that you win as long as there is unused capacity in your cluster.
 
-![Graph of the results](Benchmark/Benchmark.png)
+![Graph of the results](Benchmark/Benchmark55.png)
 
 ##Requirements
 First of all this only works with Hadoop 0.21 and up because this depends on 

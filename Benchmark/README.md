@@ -22,11 +22,82 @@ All output files were checked and resulted in the same md5 of the output file.
 
 #Results
 
+#Conclusions
+As long there is spare CPU capacity the solution allows for a very good scaling of the processing speed.
+A file that would normally take about 24 minutes to 'wordcount' only takes about 3 minutes.
+
+After the maximal paralelisation point (12) we see that the processing time jumps up and stays there. This can be explained by the fact that only after the first mapper of the 12 mappers is finished the 13th can start.
+
+##A 5.5 GB input file doing a wordcount
+
+![Graph of the results](Benchmark55.png)
+
+From the ganglia graphs of the cluster you can see that beyond the point of `no more free mappers` the only thing that really changes is that the cluster is moving more and more data around over the network.
+
+![CPU Usage](cpu-graph.gif) 
+![Load](load-graph.gif) 
+![Network traffic](network-graph.gif)
+
+Splitsize | Splits | Elapsed | Avg. Map Time | Total Map Time
+ --:|--:|--:|--:|--:|
+5509500001 | 1 | 7286 | 7278 | 7278
+2754750001 | 2 | 3570 | 3530 | 7060
+1836500001 | 3 | 2610 | 2486 | 7458
+1377375001 | 4 | 1907 | 1835 | 7340
+1101900001 | 5 | 1627 | 1499 | 7495
+918250001 | 6 | 1273 | 1211 | 7266
+787071429 | 7 | 1240 | 1142 | 7994
+688687501 | 8 | 1160 | 1024 | 8192
+612166667 | 9 | 1000 | 896 | 8064
+550950001 | 10 | 858 | 806 | 8060
+500863637 | 11 | 817 | 725 | 7975
+459125001 | 12 | 819 | 694 | 8328
+423807693 | 13 | 1189 | 653 | 8489
+393535715 | 14 | 1181 | 609 | 8526
+367300001 | 15 | 1189 | 579 | 8685
+344343751 | 16 | 1104 | 545 | 8720
+324088236 | 17 | 1099 | 512 | 8704
+306083334 | 18 | 1015 | 488 | 8784
+289973685 | 19 | 1000 | 471 | 8949
+275475001 | 20 | 965 | 446 | 8920
+262357143 | 21 | 940 | 432 | 9072
+250431819 | 22 | 943 | 423 | 9306
+239543479 | 23 | 1052 | 411 | 9453
+229562501 | 24 | 1105 | 393 | 9432
+220380001 | 25 | 1092 | 380 | 9500
+211903847 | 26 | 1155 | 372 | 9672
+204055556 | 27 | 1092 | 357 | 9639
+196767858 | 28 | 1072 | 350 | 9800
+189982759 | 29 | 1055 | 336 | 9744
+183650001 | 30 | 1082 | 331 | 9930
+177725807 | 31 | 998 | 313 | 9703
+172171876 | 32 | 1038 | 315 | 10080
+166954546 | 33 | 1063 | 303 | 9999
+162044118 | 34 | 1059 | 304 | 10336
+157414286 | 35 | 1201 | 298 | 10430
+153041667 | 36 | 1110 | 286 | 10296
+148905406 | 37 | 1097 | 281 | 10397
+144986843 | 38 | 1095 | 274 | 10412
+141269231 | 39 | 1106 | 274 | 10686
+137737501 | 40 | 1108 | 271 | 10840
+134378049 | 41 | 1097 | 263 | 10783
+131178572 | 42 | 1206 | 262 | 11004
+128127907 | 43 | 1195 | 258 | 11094
+125215910 | 44 | 1195 | 257 | 11308
+122433334 | 45 | 1197 | 248 | 11160
+119771740 | 46 | 1150 | 248 | 11408
+117223405 | 47 | 1174 | 244 | 11468
+114781251 | 48 | 1179 | 240 | 11520
+112438776 | 49 | 1176 | 238 | 11662
+110190001 | 50 | 1212 | 237 | 11850
+
+
+
 ##A 1.1 GB input file doing a wordcount.
 
 On a single machine simply running a `gzip -t <file>` takes about 45 seconds. So in general we can say that the longest running mapper cannot get below the 45 seconds.
 
-![Graph of the results](Benchmark.png)
+![Graph of the results](Benchmark11.png)
 
 Splitsize | Splits | Elapsed | Avg. Map Time | Total Map Time
  --:|--:|--:|--:|--:|
@@ -175,8 +246,3 @@ Splitsize | Splits | Elapsed | Avg. Map Time | Total Map Time
   2500000 | 56 |  62 sec |   9 sec | 504 sec | 
 
 
-#Conclusions
-As long there is spare CPU capacity the solution allows for a very good scaling of the processing speed.
-A file that would normally take about 24 minutes to 'wordcount' only takes about 3 minutes.
-
-After the maximal paralelisation point (12) we see that the processing time jumps up and stays there. This can be explained by the fact that only after the first mapper of the 12 mappers is finished the 13th can start.
