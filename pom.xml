@@ -5,18 +5,49 @@
   <groupId>nl.basjes.hadoop</groupId>
   <artifactId>hadoop-splittablegzip</artifactId>
   <!-- Do NOT use a '-' in the version number (it's because of the RPM version) !! -->
-  <version>1.0_cdh_4.5.0</version>
+  <version>1.0</version>
   <packaging>jar</packaging>
 
   <name>Splittable Gzip codec</name>
   <url>https://github.com/nielsbasjes/splittable-gzip</url>
+
+  <profiles>
+    <profile>
+      <id>cdh4</id>
+      <activation>
+        <property>
+          <name>cdh</name>
+          <value>4</value>
+        </property>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <hadoop.version>2.0.0-cdh4.6.0</hadoop.version>
+        <envClassifier>cdh4.6.0</envClassifier>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>cdh5</id>
+      <activation>
+        <property>
+          <name>cdh</name>
+          <value>5</value>
+        </property>
+      </activation>
+      <properties>
+        <hadoop.version>2.2.0-cdh5.0.0-beta-2</hadoop.version>
+        <envClassifier>cdh5.0.0-beta2</envClassifier>
+      </properties>
+    </profile>
+
+  </profiles>
 
   <properties>
     <compileSource>1.6</compileSource>
     <targetJdk>1.6</targetJdk>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <hadoop.releases.repo>https://repository.cloudera.com/artifactory/cloudera-repos/</hadoop.releases.repo>
-    <hadoop.version>2.0.0-cdh4.5.0</hadoop.version>
   </properties>
   
   <repositories>
@@ -53,6 +84,15 @@
 
   <build>
     <plugins>
+
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.3.2</version>
+        <configuration>
+          <classifier>${envClassifier}</classifier>
+        </configuration>
+      </plugin>
+
       <plugin>
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>2.8.1</version>
@@ -111,6 +151,7 @@
           <packager>Niels Basjes</packager>
           <group>Development/Libraries</group>
           <needarch>noarch</needarch>
+          <version>${project.version}_${envClassifier}</version>
           <description>
 This codec offers a trade off between "spent resources" and "scalability" 
 when reading Gzipped input files by simply always starting at the beginning 
@@ -125,13 +166,13 @@ too to reduce the "wall clock" time in some real-life situations.</description>
               <groupname>root</groupname>
               <sources>
                 <source>
-                  <location>target/${project.build.finalName}.jar</location>
+                  <location>target/${project.build.finalName}-${envClassifier}.jar</location>
                 </source>
               </sources>
             </mapping>
 
             <mapping>
-              <directory>/usr/share/doc/${project.build.finalName}/apidocs</directory>
+              <directory>/usr/share/doc/${project.build.finalName}-${envClassifier}/apidocs</directory>
               <username>root</username>
               <groupname>root</groupname>
               <sources>
@@ -142,7 +183,7 @@ too to reduce the "wall clock" time in some real-life situations.</description>
             </mapping>
 
             <mapping>
-              <directory>/usr/share/doc/${project.build.finalName}/</directory>
+              <directory>/usr/share/doc/${project.build.finalName}-${envClassifier}/</directory>
               <username>root</username>
               <groupname>root</groupname>
               <sources>
