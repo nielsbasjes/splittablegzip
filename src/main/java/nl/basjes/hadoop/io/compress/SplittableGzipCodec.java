@@ -341,6 +341,9 @@ public class SplittableGzipCodec extends GzipCodec implements
       // Now we put the real split range values back.
       setStart(start);
       setEnd(end);
+
+      // Set the reporting back to normal
+      posState = POS_STATE.REPORT;
     }
 
     // -------------------------------------------
