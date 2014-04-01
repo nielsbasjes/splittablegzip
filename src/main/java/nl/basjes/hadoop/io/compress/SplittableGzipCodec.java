@@ -281,6 +281,13 @@ public class SplittableGzipCodec extends GzipCodec implements
       throws IOException {
       super(in, start, end);
 
+      if (getAdjustedEnd()-getAdjustedStart() < bufferSize) {
+        throw new IllegalArgumentException("The provided InputSplit " +
+                "(" + getAdjustedStart() + ";" + getAdjustedEnd() + "] " +
+                "is "+(getAdjustedEnd()-getAdjustedStart())+" bytes which is too small. " +
+                "(Minimum is " + bufferSize + ")");
+      }
+
       // We MUST have the option of slowing down the reading of data.
       // This check will fail if someone creates a subclass that breaks this.
       if (in instanceof ThrottleableDecompressorStream) {
@@ -343,7 +350,7 @@ public class SplittableGzipCodec extends GzipCodec implements
      */
     enum POS_STATE {
       REPORT, HOLD, SLOPE
-    };
+    }
 
     private POS_STATE posState = POS_STATE.REPORT;
 

@@ -21,8 +21,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Random;
 
-import junit.framework.TestCase;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
@@ -40,15 +38,21 @@ import org.apache.hadoop.util.LineReader;
 import org.apache.hadoop.util.ReflectionUtils;
 import org.junit.Test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.fail;
+
 /**
  * Unit tests to see if splitting codecs make their splits accurately.
  * This verifies if the seams between the splits are 100% accurate by comparing
  * all splits with a non-splitted read of the same input.
  */
-public class TestSplittableCodecSeams extends TestCase {
+public class TestSplittableCodecSeams {
 
   private static final Log LOG = LogFactory
       .getLog(TestSplittableCodecSeams.class);
+
+  final int BUFFER_SIZE = 4096;
 
   /**
    * Test with a series of files with several fixed sizes in trailing gibberish.
@@ -58,8 +62,9 @@ public class TestSplittableCodecSeams extends TestCase {
   public void testSplittableGzipCodecSeamsFixedLineLengths() {
     for (int length = 1; length <= 15; length += 3) {
       try {
+        int splitSize = 10000;
         validateSplitSeamsWithSyntheticFile(SplittableGzipCodec.class,
-            100000, length, 0, 10000);
+            100000, length, 0, splitSize, 2*splitSize);
       } catch (final IOException e) {
         fail("Exception was thrown: " + e.toString());
       }
@@ -73,11 +78,35 @@ public class TestSplittableCodecSeams extends TestCase {
   @Test
   public void testSplittableGzipCodecSeamsRandomLineLengths() {
     try {
+      int splitSize = 25000;
       validateSplitSeamsWithSyntheticFile(SplittableGzipCodec.class,
-          10000, 500, 250, 25000);
+          10000, 500, 250, splitSize, 2*splitSize);
     } catch (final IOException e) {
       fail("Exception was thrown: " + e.toString());
     }
+  }
+
+  /**
+   * Test with a file with several varying split sizes.
+   * This was created to push the system into a bad split size for the last split
+   * NOTE: At 5011 there used to be a nasty edge case.
+   */
+  @Test (expected = IllegalArgumentException.class)
+  public void testSplittableGzipCodecSeamsVariousSplitSizes() throws IOException {
+    for (int splitSize = 5010; splitSize <= 5020; splitSize++) {
+      validateSplitSeamsWithSyntheticFile(SplittableGzipCodec.class,
+          1000, 500, 250, splitSize, 6000);
+    }
+  }
+
+  /**
+   * Test with a file with a bad split size.
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testSplittableGzipCodecSeamsBadSplitSize() throws IOException {
+    int splitSize = 2000;
+    validateSplitSeamsWithSyntheticFile(SplittableGzipCodec.class,
+            1000, 500, 250, splitSize, 4096);
   }
 
   // ------------------------------------------
@@ -86,27 +115,32 @@ public class TestSplittableCodecSeams extends TestCase {
    * This creates a synthetic file and then uses it to run the split seam check.
    */
   private void validateSplitSeamsWithSyntheticFile(
-      final Class<? extends SplittableCompressionCodec> codecClass,
-      final long records,
-      final int recordLength,
-      final int recordLengthJitter,
-      final long splitSize) throws IOException {
+          final Class<? extends SplittableCompressionCodec> codecClass,
+          final long records,
+          final int  recordLength,
+          final int  recordLengthJitter,
+          final long splitSize,
+          final long lastSplitSizeLimit) throws IOException {
     final Configuration conf = new Configuration();
 
     if (recordLength + recordLengthJitter > splitSize) {
       fail("Test definition error: Make the splits bigger than the records.");
     }
 
+    if (splitSize > lastSplitSizeLimit) {
+      fail("Test definition error: The last split must be the same or larger as the other splits.");
+    }
+
     final FileSystem fs = FileSystem.getLocal(conf);
     final Path filename = writeSplitTestFile(conf, codecClass, records,
-        recordLength, recordLengthJitter);
+            recordLength, recordLengthJitter);
 
     LOG.info("Input is SYNTHETIC: "
-        + "records=" + records + ", "
-        + "recordLength=" + recordLength
-        + (recordLengthJitter==0?"":"+random[0;"+ recordLengthJitter + "]."));
+            + "records=" + records + ", "
+            + "recordLength=" + recordLength
+            + (recordLengthJitter == 0 ? "" : "+random[0;" + recordLengthJitter + "]."));
 
-    validateSplitSeams(conf, fs, filename, codecClass, splitSize);
+    validateSplitSeams(conf, fs, filename, codecClass, splitSize, records, lastSplitSizeLimit);
 
     fs.delete(filename, true);
   }
@@ -118,16 +152,13 @@ public class TestSplittableCodecSeams extends TestCase {
    * in the same lines as reading the file as a single 'split'.
    */
   private void validateSplitSeams(final Configuration conf,
-      final FileSystem fs, final Path filename,
-      final Class<? extends SplittableCompressionCodec> codecClass,
-      final long splitSize) throws IOException {
-
-    if (splitSize < 5000) {
-      fail("Test definition error: Split size is too small.");
-    }
-
+                                  final FileSystem fs, final Path filename,
+                                  final Class<? extends SplittableCompressionCodec> codecClass,
+                                  final long splitSize,
+                                  final long recordsInFile,
+                                  final long lastSplitSizeLimit) throws IOException {
     // To make the test predictable
-    conf.setInt("io.file.buffer.size", 4 * 1024);
+    conf.setInt("io.file.buffer.size", BUFFER_SIZE);
 
     final FileStatus infile = fs.getFileStatus(filename);
     final long inputLength = infile.getLen();
@@ -156,7 +187,7 @@ public class TestSplittableCodecSeams extends TestCase {
 
     final Text refLine = new Text();
     final Decompressor refDcmp = CodecPool.getDecompressor(codec);
-    assertNotNull("Unable to load the decompressor for codec \""+codec.getClass().getName()+"\"", refDcmp);
+    assertNotNull("Unable to load the decompressor for codec \"" + codec.getClass().getName() + "\"", refDcmp);
 
     final SplitCompressionInputStream refStream = codec
       .createInputStream(fs.open(infile.getPath()), refDcmp, 0, inputLength,
@@ -165,12 +196,11 @@ public class TestSplittableCodecSeams extends TestCase {
 
     final Text line = new Text();
     final Decompressor dcmp = CodecPool.getDecompressor(codec);
-    assertNotNull("Unable to load the decompressor for codec \""+codec.getClass().getName()+"\"", refDcmp);
+    assertNotNull("Unable to load the decompressor for codec \"" + codec.getClass().getName() + "\"", refDcmp);
 
     try {
       long start = 0;
       long end = splitSize;
-      int readChars = -1;
       int splitCount = 0;
       long refLineNumber = 0;
       long splitLineNumber;
@@ -178,7 +208,7 @@ public class TestSplittableCodecSeams extends TestCase {
       while (end <= inputLength) {
         splitLineNumber = 0;
         ++splitCount;
-        LOG.trace("-------------------------------------------------------");
+        LOG.debug("-------------------------------------------------------");
         dcmp.reset(); // Reset the Decompressor for reuse with the new stream
 
         final SplitCompressionInputStream splitStream = codec
@@ -188,17 +218,17 @@ public class TestSplittableCodecSeams extends TestCase {
         final long adjustedStart = splitStream.getAdjustedStart();
         final long adjustedEnd = splitStream.getAdjustedEnd();
 
-        if (LOG.isTraceEnabled()) {
-          LOG.trace("Doing split " + splitCount
-              + " on range " + " (" + start + "-" + end + ")"
-              + " adjusted to (" + adjustedStart + "-" + adjustedEnd + ")");
+        if (LOG.isDebugEnabled()) {
+          LOG.debug("Doing split " + splitCount
+                  + " on range " + " (" + start + "-" + end + ")"
+                  + " adjusted to (" + adjustedStart + "-" + adjustedEnd + ")");
         }
 
         final LineReader lreader = new LineReader(splitStream, conf);
 
         if (start != 0) {
           // Not the first split so we discard the first (incomplete) line.
-          readChars = lreader.readLine(line);
+          int readChars = lreader.readLine(line);
           if (LOG.isTraceEnabled()) {
             LOG.trace("DISCARD LINE " + 0 + " in split " + splitCount
                 + " pos=" + splitStream.getPos()
@@ -211,46 +241,61 @@ public class TestSplittableCodecSeams extends TestCase {
           ++splitLineNumber;
 
           // Get the reference value
-          if (!nextKeyValue(refStream, refReader, inputLength, refLine)){
-            fail("Split goes beyond the end of the reference with line number "
-                +splitLineNumber);
+          if (!nextKeyValue(refStream, refReader, inputLength, refLine)) {
+            LOG.error(String.format("S>%05d: %s", splitLineNumber, line));
+            fail("Split goes beyond the end of the reference with line number " + splitLineNumber);
           }
           ++refLineNumber;
+
+          if (LOG.isDebugEnabled() && refLineNumber > (recordsInFile-10)) {
+            LOG.debug(String.format("R<%05d: %s", refLineNumber, refLine));
+            LOG.debug(String.format("S>%05d: %s", splitLineNumber, line));
+          }
 
           assertEquals("Line must be same in reference and in split at line "
               +refLineNumber, refLine, line);
 
           if (LOG.isTraceEnabled()) {
             LOG.trace("LINE " + splitLineNumber + " in split " + splitCount
-                + " (" + refLineNumber + ") pos=" + splitStream.getPos()
-                + " length=" + line.getLength() + ": \"" + line + "\"");
+                    + " (" + refLineNumber + ") pos=" + splitStream.getPos()
+                    + " length=" + line.getLength() + ": \"" + line + "\"");
           }
         }
 
         // We just read through the entire split
-        LOG.debug("Checked split " + splitCount + " ("+start+"-"+end+") "
-            + "containing " + splitLineNumber + " lines.");
+        LOG.debug("Checked split " + splitCount + " (" + adjustedStart + "-" + adjustedEnd + ") "
+                + "containing " + splitLineNumber + " lines.");
 
         if (end == inputLength) {
+          LOG.info("====================> Finished the last split <====================");
           break; // We've reached the end of the last split
         }
 
         // Determine start and end for the next split
         start = end;
 
-        if ((end + (splitSize * 1.5)) > inputLength) {
+        if ((end + lastSplitSizeLimit) > inputLength) {
           end = inputLength;
+          LOG.info("====================> Starting the last split ("+start+" - "+end+") <====================");
         } else {
           end += splitSize;
+          LOG.info("====================> Starting the next split ("+start+" - "+end+") <====================");
         }
 
       }
 
-      if (nextKeyValue(refStream, refReader, inputLength, refLine)){
-        fail("The reference is at least one line longer than the last split");
+      if (nextKeyValue(refStream, refReader, inputLength, refLine)) {
+        ++refLineNumber;
+        LOG.error(String.format("R<%05d: %s", refLineNumber, refLine));
+        fail("The reference is at least one line longer than the last split ( " +
+                "splitSize="    + splitSize     + ", " +
+                "inputLength= " + inputLength   + ", " +
+                "split start="  + start         + ", " +
+                "split end="    + end           + ", " +
+                "line="         + refLineNumber + ")"  );
       }
 
-      LOG.info("Verified "+refLineNumber+" lines in "+splitCount+" splits.");
+      LOG.info("Verified " + refLineNumber + " lines in " + splitCount + " splits.");
 
     } finally {
       CodecPool.returnDecompressor(dcmp);
