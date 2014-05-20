@@ -100,6 +100,16 @@ public class TestSplittableCodecSeams {
   }
 
   /**
+   * Test with a file with 1 character lines.
+   */
+  @Test
+  public void testSplittableGzipCodecSeamsSingleCharLines() throws IOException {
+    int splitSize = 4096;
+    validateSplitSeamsWithSyntheticFile(SplittableGzipCodec.class,
+        1000000, 1, 0, splitSize, 2*splitSize);
+  }
+
+  /**
    * Test with a file with a bad split size.
    */
   @Test(expected = IllegalArgumentException.class)
@@ -111,9 +121,6 @@ public class TestSplittableCodecSeams {
 
   // ------------------------------------------
 
-  /**
-   * This creates a synthetic file and then uses it to run the split seam check.
-   */
   private void validateSplitSeamsWithSyntheticFile(
           final Class<? extends SplittableCompressionCodec> codecClass,
           final long records,
@@ -121,6 +128,21 @@ public class TestSplittableCodecSeams {
           final int  recordLengthJitter,
           final long splitSize,
           final long lastSplitSizeLimit) throws IOException {
+    validateSplitSeamsWithSyntheticFile(codecClass, records, recordLength, recordLengthJitter, splitSize, lastSplitSizeLimit, 1);
+    validateSplitSeamsWithSyntheticFile(codecClass, records, recordLength, recordLengthJitter, splitSize, lastSplitSizeLimit, 1000);
+  }
+
+  /**
+    * This creates a synthetic file and then uses it to run the split seam check.
+    */
+  private void validateSplitSeamsWithSyntheticFile(
+          final Class<? extends SplittableCompressionCodec> codecClass,
+          final long records,
+          final int  recordLength,
+          final int  recordLengthJitter,
+          final long splitSize,
+          final long lastSplitSizeLimit,
+          final int  randomizeEveryNChars) throws IOException {
     final Configuration conf = new Configuration();
 
     if (recordLength + recordLengthJitter > splitSize) {
@@ -133,7 +155,7 @@ public class TestSplittableCodecSeams {
 
     final FileSystem fs = FileSystem.getLocal(conf);
     final Path filename = writeSplitTestFile(conf, codecClass, records,
-            recordLength, recordLengthJitter);
+            recordLength, recordLengthJitter, randomizeEveryNChars);
 
     LOG.info("Input is SYNTHETIC: "
             + "records=" + records + ", "
@@ -348,7 +370,8 @@ public class TestSplittableCodecSeams {
   private static Path writeSplitTestFile(final Configuration conf,
       final Class<? extends SplittableCompressionCodec> codecClass,
       final long records, final int recordLength,
-      final int trailingSizeJitter) throws IOException {
+      final int trailingSizeJitter,
+      final int randomizeEveryNChars) throws IOException {
 
     RAND.setSeed(1); // Make the tests better reproducable
 
@@ -371,7 +394,7 @@ public class TestSplittableCodecSeams {
       for (long seq = 1; seq <= records; ++seq) {
         final String line = randomGibberish(recordLength
             + (trailingSizeJitter > 0 ? RAND
-                .nextInt(trailingSizeJitter) : 0)) + "\n";
+                .nextInt(trailingSizeJitter) : 0), randomizeEveryNChars) + "\n";
         // There must be a simpler way to output ACSII instead of 2 byte UNICODE
         out.writeBytes(new String(line.getBytes("UTF-8"), "US-ASCII"));
       }
@@ -395,13 +418,19 @@ public class TestSplittableCodecSeams {
     '!', '@', '#', '$', '%', '^', '&', '*', '(', ')'
   };
 
-  private static String randomGibberish(final int length) {
+  private static long charsWritten = 0;
+    private static char nextChar = 'a';
+  private static String randomGibberish(final int length, final int randomizeEveryNChars) {
     if (length == 0) {
       return "";
     }
     final StringBuilder sb = new StringBuilder(length);
     for (int i = 0; i < length; i++) {
-      sb.append(LETTERS[RAND.nextInt(LETTERS.length)]);
+      if (charsWritten % randomizeEveryNChars == 0) {
+          nextChar = LETTERS[RAND.nextInt(LETTERS.length)];
+      }
+      charsWritten++;
+      sb.append(nextChar);
     }
     return sb.toString();
   }
