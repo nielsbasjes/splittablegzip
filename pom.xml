@@ -5,7 +5,7 @@
   <groupId>nl.basjes.hadoop</groupId>
   <artifactId>hadoop-splittablegzip</artifactId>
   <!-- Do NOT use a '-' in the version number (it's because of the RPM version) !! -->
-  <version>1.0</version>
+  <version>1.1</version>
   <packaging>jar</packaging>
 
   <name>Splittable Gzip codec</name>
@@ -19,11 +19,12 @@
           <name>cdh</name>
           <value>4</value>
         </property>
-        <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
         <hadoop.version>2.0.0-cdh4.6.0</hadoop.version>
-        <envClassifier>cdh4.6.0</envClassifier>
+        <hadoop.releases.repo>https://repository.cloudera.com/artifactory/cloudera-repos/</hadoop.releases.repo>
+        <!-- This next value may NOT contain a '-' !!! -->
+        <envClassifier>cdh_4.6.0</envClassifier>
       </properties>
     </profile>
 
@@ -36,18 +37,36 @@
         </property>
       </activation>
       <properties>
-        <hadoop.version>2.2.0-cdh5.0.0-beta-2</hadoop.version>
-        <envClassifier>cdh5.0.0-beta2</envClassifier>
+        <hadoop.version>2.3.0-cdh5.0.1</hadoop.version>
+        <hadoop.releases.repo>https://repository.cloudera.com/artifactory/cloudera-repos/</hadoop.releases.repo>
+        <!-- This next value may NOT contain a '-' !!! -->
+        <envClassifier>cdh_5.0.1</envClassifier>
+      </properties>
+    </profile>
+
+    <profile>
+      <id>hdp21</id>
+      <activation>
+        <property>
+          <name>hdp</name>
+          <value>2.1</value>
+        </property>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <hadoop.version>2.4.0.2.1.2.0-402</hadoop.version>
+        <hadoop.releases.repo>http://repo.hortonworks.com/content/repositories/releases</hadoop.releases.repo>
+        <!-- This next value may NOT contain a '-' !!! -->
+        <envClassifier>hdp_2.1.2</envClassifier>
       </properties>
     </profile>
 
   </profiles>
 
   <properties>
-    <compileSource>1.6</compileSource>
-    <targetJdk>1.6</targetJdk>
+    <compileSource>1.7</compileSource>
+    <targetJdk>1.7</targetJdk>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <hadoop.releases.repo>https://repository.cloudera.com/artifactory/cloudera-repos/</hadoop.releases.repo>
   </properties>
   
   <repositories>
@@ -112,20 +131,20 @@
         <artifactId>maven-pmd-plugin</artifactId>
         <version>2.7.1</version>
         <configuration>
-          <linkXref>true</linkXref>
+          <linkXRef>true</linkXRef>
           <!-- <rulesets> <ruleset> /pmd-ruleset.xml </ruleset> </rulesets> -->
-          <executions>
-            <execution>
-              <phase>package</phase>
-              <goals>
-                <goal>cpd-check</goal> <!-- Fail the build if copy/paste detector fails -->
-              </goals>
-              <configuration>
-                <verbose>true</verbose>
-              </configuration>
-            </execution>
-          </executions>
         </configuration>
+          <executions>
+              <execution>
+                  <phase>package</phase>
+                  <goals>
+                      <goal>cpd-check</goal> <!-- Fail the build if copy/paste detector fails -->
+                  </goals>
+                  <configuration>
+                      <verbose>true</verbose>
+                  </configuration>
+              </execution>
+          </executions>
       </plugin>
 
       <plugin>
@@ -133,7 +152,7 @@
         <artifactId>findbugs-maven-plugin</artifactId>
         <version>2.0.1</version>
         <configuration>
-          <targetJdk>1.6</targetJdk>
+          <targetJdk>${targetJdk}</targetJdk>
         </configuration>
         <executions>
           <execution>
