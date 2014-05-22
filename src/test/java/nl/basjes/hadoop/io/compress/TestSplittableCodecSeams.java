@@ -64,7 +64,7 @@ public class TestSplittableCodecSeams {
       try {
         int splitSize = 10000;
         validateSplitSeamsWithSyntheticFile(SplittableGzipCodec.class,
-            100000, length, 0, splitSize, 2*splitSize);
+            100000, length, 0, splitSize, 2*splitSize, 1);
       } catch (final IOException e) {
         fail("Exception was thrown: " + e.toString());
       }
@@ -106,7 +106,7 @@ public class TestSplittableCodecSeams {
   public void testSplittableGzipCodecSeamsSingleCharLines() throws IOException {
     int splitSize = 4096;
     validateSplitSeamsWithSyntheticFile(SplittableGzipCodec.class,
-        1000000, 1, 0, splitSize, 2*splitSize);
+        10000000, 1, 0, splitSize, 2*splitSize);
   }
 
   /**
