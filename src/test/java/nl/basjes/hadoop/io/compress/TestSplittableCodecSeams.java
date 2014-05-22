@@ -106,7 +106,7 @@ public class TestSplittableCodecSeams {
   public void testSplittableGzipCodecSeamsSingleCharLines() throws IOException {
     int splitSize = 4096;
     validateSplitSeamsWithSyntheticFile(SplittableGzipCodec.class,
-        10000000, 1, 0, splitSize, 2*splitSize);
+        10000000, 1, 0, splitSize, 2*splitSize, 100);
   }
 
   /**
