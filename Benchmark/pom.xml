@@ -8,11 +8,11 @@
   <name>wordcount</name>
   
   <properties>
-    <compileSource>1.6</compileSource>
-    <targetJdk>1.6</targetJdk>
+    <compileSource>1.7</compileSource>
+    <targetJdk>1.7</targetJdk>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <hadoop.releases.repo>https://repository.cloudera.com/artifactory/cloudera-repos/</hadoop.releases.repo>
-    <hadoop.version>2.0.0-cdh4.5.0</hadoop.version>
+    <hadoop.releases.repo>http://repo.hortonworks.com/content/repositories/releases/</hadoop.releases.repo>
+    <hadoop.version>2.4.0.2.1.2.0-402</hadoop.version>
   </properties>
    <repositories>
     <repository>
