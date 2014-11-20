@@ -3,88 +3,22 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>nl.basjes.hadoop</groupId>
-  <artifactId>hadoop-splittablegzip</artifactId>
+  <artifactId>splittablegzip</artifactId>
   <!-- Do NOT use a '-' in the version number (it's because of the RPM version) !! -->
-  <version>1.1</version>
+  <version>1.2-SNAPSHOT</version>
   <packaging>jar</packaging>
 
   <name>Splittable Gzip codec</name>
-  <url>https://github.com/nielsbasjes/splittable-gzip</url>
-
-  <profiles>
-    <profile>
-      <id>cdh4</id>
-      <activation>
-        <property>
-          <name>cdh</name>
-          <value>4</value>
-        </property>
-      </activation>
-      <properties>
-        <hadoop.version>2.0.0-cdh4.6.0</hadoop.version>
-        <hadoop.releases.repo>https://repository.cloudera.com/artifactory/cloudera-repos/</hadoop.releases.repo>
-        <!-- This next value may NOT contain a '-' !!! -->
-        <envClassifier>cdh_4.6.0</envClassifier>
-      </properties>
-    </profile>
-
-    <profile>
-      <id>cdh5</id>
-      <activation>
-        <property>
-          <name>cdh</name>
-          <value>5</value>
-        </property>
-      </activation>
-      <properties>
-        <hadoop.version>2.3.0-cdh5.0.1</hadoop.version>
-        <hadoop.releases.repo>https://repository.cloudera.com/artifactory/cloudera-repos/</hadoop.releases.repo>
-        <!-- This next value may NOT contain a '-' !!! -->
-        <envClassifier>cdh_5.0.1</envClassifier>
-      </properties>
-    </profile>
-
-    <profile>
-      <id>hdp21</id>
-      <activation>
-        <property>
-          <name>hdp</name>
-          <value>2.1</value>
-        </property>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <properties>
-        <hadoop.version>2.4.0.2.1.2.0-402</hadoop.version>
-        <hadoop.releases.repo>http://repo.hortonworks.com/content/repositories/releases</hadoop.releases.repo>
-        <!-- This next value may NOT contain a '-' !!! -->
-        <envClassifier>hdp_2.1.2</envClassifier>
-      </properties>
-    </profile>
-
-  </profiles>
+  <description>A Hadoop specific enhancement of GZip that allows running a single gzipped file on multiple mappers.</description>
+  <url>https://github.com/nielsbasjes/splittablegzip</url>
 
   <properties>
-    <compileSource>1.7</compileSource>
-    <targetJdk>1.7</targetJdk>
+    <jdkLevel>1.7</jdkLevel>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.build.outputEncoding>UTF-8</project.build.outputEncoding>
+    <hadoop.version>2.3.0</hadoop.version>
   </properties>
   
-  <repositories>
-    <repository>
-      <id>Default</id>
-      <name>Default maven2 repository</name>
-      <url>http://repo1.maven.org/maven2/</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-
-    <repository>
-      <id>Hadoop releases</id>
-      <url>${hadoop.releases.repo}</url>
-    </repository>
-  </repositories>
-
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -99,31 +33,102 @@
       <version>${hadoop.version}</version>
       <scope>provided</scope>
     </dependency>
+
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.7.7</version>
+    </dependency>
+
   </dependencies>
+
+  <profiles>
+    <profile>
+      <id>release</id>
+      <build>
+        <plugins>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>1.5</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>2.1.2</version>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar-no-fork</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>2.8.1</version>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
+            <!-- explicitly define maven-deploy-plugin after other to force exec order -->
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-deploy-plugin</artifactId>
+            <version>2.8.1</version>
+            <executions>
+              <execution>
+                <id>deploy</id>
+                <phase>deploy</phase>
+                <goals>
+                  <goal>deploy</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 
   <build>
     <plugins>
 
       <plugin>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>2.3.2</version>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.0</version>
         <configuration>
-          <classifier>${envClassifier}</classifier>
+          <source>${jdkLevel}</source>
+          <target>${jdkLevel}</target>
         </configuration>
       </plugin>
 
       <plugin>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.8.1</version>
-        <executions>
-          <execution>
-            <id>javadoc-jar</id>
-            <phase>package</phase>
-            <goals>
-              <goal>jar</goal>
-            </goals>
-          </execution>
-        </executions>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>2.1.2</version>
       </plugin>
 
       <plugin>
@@ -152,7 +157,7 @@
         <artifactId>findbugs-maven-plugin</artifactId>
         <version>2.0.1</version>
         <configuration>
-          <targetJdk>${targetJdk}</targetJdk>
+          <!--<targetJdk>${targetJdk}</targetJdk>-->
         </configuration>
         <executions>
           <execution>
@@ -170,7 +175,7 @@
           <packager>Niels Basjes</packager>
           <group>Development/Libraries</group>
           <needarch>noarch</needarch>
-          <version>${project.version}_${envClassifier}</version>
+          <version>${project.version}</version>
           <description>
 This codec offers a trade off between "spent resources" and "scalability" 
 when reading Gzipped input files by simply always starting at the beginning 
@@ -185,13 +190,13 @@ too to reduce the "wall clock" time in some real-life situations.</description>
               <groupname>root</groupname>
               <sources>
                 <source>
-                  <location>target/${project.build.finalName}-${envClassifier}.jar</location>
+                  <location>target/${project.build.finalName}.jar</location>
                 </source>
               </sources>
             </mapping>
 
             <mapping>
-              <directory>/usr/share/doc/${project.build.finalName}-${envClassifier}/apidocs</directory>
+              <directory>/usr/share/doc/${project.build.finalName}/apidocs</directory>
               <username>root</username>
               <groupname>root</groupname>
               <sources>
@@ -202,7 +207,7 @@ too to reduce the "wall clock" time in some real-life situations.</description>
             </mapping>
 
             <mapping>
-              <directory>/usr/share/doc/${project.build.finalName}-${envClassifier}/</directory>
+              <directory>/usr/share/doc/${project.build.finalName}/</directory>
               <username>root</username>
               <groupname>root</groupname>
               <sources>
@@ -227,13 +232,30 @@ too to reduce the "wall clock" time in some real-life situations.</description>
     </plugins>
   </build>
 
-  <reporting>
-    <plugins>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.8.1</version>
-      </plugin>
-    </plugins>
-  </reporting>
+  <licenses>
+    <license>
+      <name>Apache License v2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>Niels Basjes</name>
+      <email>niels@basjes.nl</email>
+      <roles>
+        <role>Architect</role>
+        <role>Developer</role>
+      </roles>
+      <timezone>Europe/Amsterdam</timezone>
+    </developer>
+  </developers>
+
+  <scm>
+    <developerConnection>scm:git:.</developerConnection>
+    <connection>https://github.com/nielsbasjes/splittablegzip.git</connection>
+    <url>https://github.com/nielsbasjes/splittablegzip</url>
+  </scm>
+
+
 </project>

@@ -22,13 +22,13 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.commons.codec.binary.Hex;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.io.compress.CompressionInputStream;
 import org.apache.hadoop.io.compress.Decompressor;
 import org.apache.hadoop.io.compress.GzipCodec;
 import org.apache.hadoop.io.compress.SplitCompressionInputStream;
 import org.apache.hadoop.io.compress.SplittableCompressionCodec;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * For each "split" the gzipped input file is read from the beginning of the
@@ -219,8 +219,8 @@ import org.apache.hadoop.io.compress.SplittableCompressionCodec;
 public class SplittableGzipCodec extends GzipCodec implements
     SplittableCompressionCodec {
 
-    private static final Log LOG =
-            LogFactory.getLog(SplittableGzipCodec.class);
+    private static final Logger LOG =
+            LoggerFactory.getLogger(SplittableGzipCodec.class);
 
   private static final int DEFAULT_FILE_BUFFER_SIZE = 4 * 1024; // 4 KiB
 
@@ -234,7 +234,7 @@ public class SplittableGzipCodec extends GzipCodec implements
       final long start, final long end,
       final READ_MODE readMode) // Ignored by this codec
     throws IOException {
-    LOG.info("Creating SplittableGzipInputStream (range = [" + start + "," + end + "])");
+    LOG.info("Creating SplittableGzipInputStream (range = [{},{}])", start, end );
     return new SplittableGzipInputStream(createInputStream(seekableIn,
         decompressor), start, end, getConf().getInt("io.file.buffer.size",
           DEFAULT_FILE_BUFFER_SIZE));
@@ -323,7 +323,7 @@ public class SplittableGzipCodec extends GzipCodec implements
       // The target buffer to dump the discarded info to.
       final byte[] skippedBytes = new byte[bufferSize];
 
-      LOG.debug("SKIPPING to position :" + start);
+      LOG.debug("SKIPPING to position :{}", start);
       while (getPos() < start) {
         // This reads the input and decompresses the data.
         if (-1 == read(skippedBytes, 0, bufferSize)) {
@@ -336,7 +336,7 @@ public class SplittableGzipCodec extends GzipCodec implements
         }
       }
 
-      LOG.debug("ARRIVED at target location(" + start + "): " + getPos());
+      LOG.debug("ARRIVED at target location({}): {}", start, getPos());
 
       // Now we put the real split range values back.
       setStart(start);
@@ -422,7 +422,7 @@ public class SplittableGzipCodec extends GzipCodec implements
           if (distanceToEnd <= POSITION_HOLD_DISTANCE) {
             posState = POS_STATE.HOLD;
             reportedPos = currentRealPos;
-            LOG.trace("STATE REPORT --> HOLD @ " + currentRealPos);
+            LOG.trace("STATE REPORT --> HOLD @ {}", currentRealPos);
           }
           break;
 
@@ -431,7 +431,7 @@ public class SplittableGzipCodec extends GzipCodec implements
           // If we start too early the last split may lose the last record(s).
           if (distanceToEnd <= 0) {
             posState = POS_STATE.SLOPE;
-            LOG.trace("STATE HOLD --> SLOPE @ " + currentRealPos);
+            LOG.trace("STATE HOLD --> SLOPE @ {}", currentRealPos);
           }
           break;
 
