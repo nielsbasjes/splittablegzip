@@ -81,6 +81,20 @@
           </plugin>
 
           <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>2.8.1</version>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+
+          <plugin>
             <!-- explicitly define maven-deploy-plugin after other to force exec order -->
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-deploy-plugin</artifactId>
@@ -213,9 +227,11 @@ too to reduce the "wall clock" time in some real-life situations.</description>
                 </source>
               </sources>
             </mapping>
-
           </mappings>
-          
+
+          <keyname>${gpg.keyname}</keyname>
+          <keyPassphrase><passphrase>${gpg.passphrase}</passphrase></keyPassphrase>
+
         </configuration>
         <executions>
           <execution>
@@ -228,5 +244,32 @@ too to reduce the "wall clock" time in some real-life situations.</description>
 
     </plugins>
   </build>
+
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+      <distribution>repo</distribution>
+      <comments>A business-friendly OSS license</comments>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>Niels Basjes</name>
+      <email>niels@basjes.nl</email>
+      <roles>
+        <role>Architect</role>
+        <role>Developer</role>
+      </roles>
+      <timezone>Europe/Amsterdam</timezone>
+    </developer>
+  </developers>
+
+  <scm>
+    <developerConnection>scm:git:.</developerConnection>
+    <connection>https://github.com/nielsbasjes/splittablegzip.git</connection>
+    <url>https://github.com/nielsbasjes/splittablegzip</url>
+  </scm>
 
 </project>
