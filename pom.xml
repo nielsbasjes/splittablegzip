@@ -4,7 +4,6 @@
 
   <groupId>nl.basjes.hadoop</groupId>
   <artifactId>splittablegzip-project</artifactId>
-  <!-- Do NOT use a '-' in the version number (it's because of the RPM version) !! -->
   <version>1.2-SNAPSHOT</version>
   <packaging>pom</packaging>
 
