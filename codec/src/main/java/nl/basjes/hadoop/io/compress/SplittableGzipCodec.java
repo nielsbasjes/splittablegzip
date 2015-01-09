@@ -275,10 +275,12 @@ public class SplittableGzipCodec extends GzipCodec implements
 
     // -------------------------------------------
 
-    public SplittableGzipInputStream(final CompressionInputStream in,
-        final long start, final long end, final int bufferSize)
+    public SplittableGzipInputStream(final CompressionInputStream inputStream,
+        final long start, final long end, final int inputStreamBufferSize)
       throws IOException {
-      super(in, start, end);
+      super(inputStream, start, end);
+
+      bufferSize = inputStreamBufferSize;
 
       if (getAdjustedEnd()-getAdjustedStart() < bufferSize) {
         throw new IllegalArgumentException("The provided InputSplit " +
@@ -289,15 +291,13 @@ public class SplittableGzipCodec extends GzipCodec implements
 
       // We MUST have the option of slowing down the reading of data.
       // This check will fail if someone creates a subclass that breaks this.
-      if (in instanceof ThrottleableDecompressorStream) {
-        this.in = (ThrottleableDecompressorStream) in;
+      if (inputStream instanceof ThrottleableDecompressorStream) {
+        this.in = (ThrottleableDecompressorStream) inputStream;
       } else {
         this.in = null; // Permanently cripple this instance ('in' is final) .
         throw new IOException("The SplittableGzipCodec relies on"
             + " functionality in the ThrottleableDecompressorStream class.");
       }
-
-      this.bufferSize = bufferSize;
 
       // When this close to the end of the split: crawl (read at most 1 byte
       // at a time) to avoid overshooting the end.
@@ -473,20 +473,18 @@ public class SplittableGzipCodec extends GzipCodec implements
           if (getPos() >= getAdjustedEnd() - TRACE_REPORTING_DISTANCE
               && bytesRead < 10) {
             final String bytes = new String(b).substring(0, bytesRead);
-            LOG.trace("READ TAIL " + bytesRead + " bytes (" + getStateName()
-                + " pos = " + getPos() + "/" + getRealPos() + "): " + "##"
-                + bytes + "##" + " HEX:##"
-                + new String(Hex.encodeHex(bytes.getBytes())) + "##");
+            LOG.trace("READ TAIL {} bytes ({} pos = {}/{}): ##{}## HEX:##{}##",
+                      bytesRead, getStateName(), getPos(), getRealPos(),
+                      bytes, new String(Hex.encodeHex(bytes.getBytes())));
           }
 
           // Report massive info on the FIRST 64 bytes of the split
           if (getPos() <= getAdjustedStart() + TRACE_REPORTING_DISTANCE
               && bytesRead < 10) {
             final String bytes = new String(b).substring(0, bytesRead);
-            LOG.trace("READ HEAD " + bytesRead + " bytes (" + getStateName()
-                + " pos = " + getPos() + "/" + getRealPos() + "): " + "##"
-                + bytes + "##" + " HEX:##"
-                + new String(Hex.encodeHex(bytes.getBytes())) + "##");
+            LOG.trace("READ HEAD {} bytes ({} pos = {}/{}): ##{}## HEX:##{}##",
+                      bytesRead, getStateName(), getPos(), getRealPos(),
+                      bytes, new String(Hex.encodeHex(bytes.getBytes())));
           }
         }
       }
