@@ -31,7 +31,10 @@ Currently it can only be downloaded via github.
 
 [https://github.com/nielsbasjes/splittablegzip][github]
 
-Running mvn package automatically generates an RPM.
+Running this automatically generates an RPM:
+
+    mvn package -Prpm 
+
 
 ##Building
 On CDH the build fails if the native gzip could not be loaded for running the unit tests.
