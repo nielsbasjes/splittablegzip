@@ -24,17 +24,28 @@ First of all this only works with Hadoop 0.21 and up because this depends on
 the presence of the SplittableCompressionCodec interface.
 So Hadoop 1.x is not yet supported (waiting for [HADOOP-7823][HADOOP-7823]).
 
-I tested it with Cloudera CDH 4.5.0.
+I tested it with Hortonworks 2.1.2 and Cloudera CDH 4.5.0.
 
 ##Downloads
+
+###Sources
 Currently it can only be downloaded via github.
 
 [https://github.com/nielsbasjes/splittablegzip][github]
 
-Running this automatically generates an RPM:
+Running this in the codec directory automatically generates an RPM:
 
     mvn package -Prpm 
 
+###Binary
+For normal projects you can simply download the prebuilt version from maven central.
+So when using maven you can simply add this to your project
+
+    <dependency>
+      <groupId>nl.basjes.hadoop</groupId>
+      <artifactId>splittablegzip</artifactId>
+      <version>1.2</version>
+    </dependency>
 
 ##Building
 On CDH the build fails if the native gzip could not be loaded for running the unit tests.
