@@ -2,15 +2,9 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <parent>
-    <artifactId>splittablegzip-project</artifactId>
-    <groupId>nl.basjes.hadoop</groupId>
-    <version>1.2-SNAPSHOT</version>
-    <relativePath>../../pom.xml</relativePath>
-  </parent>
-
   <groupId>nl.basjes.hadoop</groupId>
-  <artifactId>java-benchmark</artifactId>
+  <version>1.2-SNAPSHOT</version>
+  <artifactId>splittablegzip-java-benchmark</artifactId>
   <packaging>jar</packaging>
   <name>Splittable Gzip codec - Benchmarks - Java MapReduce</name>
 
@@ -68,15 +62,6 @@
             </configuration>
           </execution>
         </executions>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-deploy-plugin</artifactId>
-        <version>2.7</version>
-        <configuration>
-          <skip>true</skip>
-        </configuration>
       </plugin>
 
     </plugins>

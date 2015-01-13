@@ -4,6 +4,7 @@ So we do it manually.
 # Ensure all has been committed
 
 # Ensure it all works
+cd codec
 mvn package
 mvn clean
 
@@ -20,7 +21,6 @@ git commit -m"Start development for ${NEXTVERSION}" -a
 
 git push
 git push origin v${RELEASEVERSION}
-
 
 # These two profiles are defined in ~/.m2/settings.xml
 git checkout v${RELEASEVERSION}
