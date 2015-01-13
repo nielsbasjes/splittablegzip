@@ -30,6 +30,7 @@ git push origin v${RELEASEVERSION}
 
 # These two profiles are defined in ~/.m2/settings.xml
 git checkout v${RELEASEVERSION}
+cd codec
 mvn clean deploy -Prelease -Pdeploy-local 
 
 VERIFY If this all looks good 
