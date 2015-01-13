@@ -4,7 +4,7 @@
 
   <groupId>nl.basjes.hadoop</groupId>
   <artifactId>splittablegzip</artifactId>
-  <version>1.2-SNAPSHOT</version>
+  <version>1.2</version>
   <packaging>jar</packaging>
   <name>Splittable Gzip codec</name>
 

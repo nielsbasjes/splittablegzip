@@ -7,16 +7,22 @@ So we do it manually.
 cd codec
 mvn package
 mvn clean
+cd ..
 
 # Creating and publishing the new Tagging
 RELEASEVERSION=1.3
-mvn versions:set -DgenerateBackupPoms=false -DnewVersion=${RELEASEVERSION}
+for D in codec Benchmark/javamr Benchmark/pig ; do
+  ( cd ${D} && mvn versions:set -DgenerateBackupPoms=false -DnewVersion=${RELEASEVERSION} )
+done
+
 git status
 git commit -m"Version ${RELEASEVERSION}" -a
 git tag -a v${RELEASEVERSION} -m"Tag Version ${RELEASEVERSION}"
 
 NEXTVERSION=1.4
-mvn versions:set -DgenerateBackupPoms=false -DnewVersion=${NEXTVERSION}-SNAPSHOT
+for D in codec Benchmark/javamr Benchmark/pig ; do
+  ( cd ${D} && mvn versions:set -DgenerateBackupPoms=false -DnewVersion=${NEXTVERSION}-SNAPSHOT )
+done
 git commit -m"Start development for ${NEXTVERSION}" -a
 
 git push
