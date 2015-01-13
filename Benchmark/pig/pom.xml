@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>nl.basjes.hadoop</groupId>
-  <version>1.2</version>
+  <version>1.3-SNAPSHOT</version>
   <artifactId>splittablegzip-pig-benchmark</artifactId>
   <packaging>jar</packaging>
   <name>Splittable Gzip codec - Benchmarks - Pig MapReduce</name>
