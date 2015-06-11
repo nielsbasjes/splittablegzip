@@ -153,7 +153,7 @@ import org.slf4j.LoggerFactory;
  * For example: http://stackoverflow.com/questions/3960651</li>
  * <li>Decompress the original gzipped file and compress using a different
  * splittable codec.<br/>
- * For example {@link org.apache.hadoop.io.compress.BZip2Codec} or not 
+ * For example {@link org.apache.hadoop.io.compress.BZip2Codec} or not
  * compressing at all</li>
  * </ol>
  * <hr>
@@ -328,7 +328,7 @@ public class SplittableGzipCodec extends GzipCodec implements
         if (-1 == read(skippedBytes, 0, bufferSize)) {
           // An EOF while seeking for the START of the split !?!?
           throw new EOFException("Unexpected end of input stream when"
-              + " seeking for the start of the split in" 
+              + " seeking for the start of the split in"
               + " SplittableGzipCodec:"
               + " start=" + start + " adjustedStart=" + start + " position="
               + getPos());
