@@ -38,15 +38,15 @@ public class WordCount extends Configured implements Tool {
 
     public static class WordSplittingMapper extends Mapper<LongWritable, Text, Text, LongWritable> {
 
-        private final static LongWritable one  = new LongWritable(1);
-        private final static Text         word = new Text();
+        private static final LongWritable ONE  = new LongWritable(1);
+        private static final Text         WORD = new Text();
 
         @Override
         public void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
             String[] words = value.toString().split(" ");
             for (String word : words) {
-                WordSplittingMapper.word.set(word);
-                context.write(WordSplittingMapper.word, one);
+                WordSplittingMapper.WORD.set(word);
+                context.write(WordSplittingMapper.WORD, ONE);
             }
         }
     }
