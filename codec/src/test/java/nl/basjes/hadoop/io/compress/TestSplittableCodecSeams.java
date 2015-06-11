@@ -318,6 +318,7 @@ public class TestSplittableCodecSeams {
 
       LOG.info("Verified " + refLineNumber + " lines in " + splitCount + " splits.");
 
+      assertEquals("Wrong number of records read", recordsInFile, refLineNumber);
     } finally {
       CodecPool.returnDecompressor(dcmp);
       CodecPool.returnDecompressor(refDcmp);
