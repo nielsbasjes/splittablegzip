@@ -120,6 +120,18 @@ public class TestSplittableCodecSeams {
 
   // ------------------------------------------
 
+  /**
+   * Test with a very small (below the minimum split size) file.
+   */
+  @Test(expected = IllegalArgumentException.class)
+  public void testSplittableGzipCodecSeamsVerySmallFile() throws IOException {
+    int splitSize = 2000;
+    validateSplitSeamsWithSyntheticFile(SplittableGzipCodec.class,
+            1, 1, 0, splitSize, 4096);
+  }
+
+  // ------------------------------------------
+
   private void validateSplitSeamsWithSyntheticFile(
           final Class<? extends SplittableCompressionCodec> codecClass,
           final long records,
@@ -191,10 +203,6 @@ public class TestSplittableCodecSeams {
     LOG.info("Input is " + inputLength + " bytes. "
             +"making a split every " + splitSize + " bytes.");
 
-    if (inputLength <= splitSize) {
-      fail("The compressed test file is too small to do any useful testing.");
-    }
-
     final SplittableCompressionCodec codec
       = ReflectionUtils.newInstance(codecClass, conf);
 
@@ -226,7 +234,7 @@ public class TestSplittableCodecSeams {
       long refLineNumber = 0;
       long splitLineNumber;
 
-      while (end <= inputLength) {
+      do {
         splitLineNumber = 0;
         ++splitCount;
         LOG.debug("-------------------------------------------------------");
@@ -303,7 +311,7 @@ public class TestSplittableCodecSeams {
           LOG.info("====================> Starting the next split ("+start+" - "+end+") <====================");
         }
 
-      }
+      } while (end <= inputLength);
 
       if (nextKeyValue(refStream, refReader, inputLength, refLine)) {
         ++refLineNumber;

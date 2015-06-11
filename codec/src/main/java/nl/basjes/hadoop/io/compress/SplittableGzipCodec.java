@@ -282,11 +282,13 @@ public class SplittableGzipCodec extends GzipCodec implements
 
       bufferSize = inputStreamBufferSize;
 
-      if (getAdjustedEnd()-getAdjustedStart() < bufferSize) {
-        throw new IllegalArgumentException("The provided InputSplit " +
-                "(" + getAdjustedStart() + ";" + getAdjustedEnd() + "] " +
-                "is "+(getAdjustedEnd()-getAdjustedStart())+" bytes which is too small. " +
-                "(Minimum is " + bufferSize + ")");
+      if (getAdjustedStart() > 0) { // If the entire file is really small (like 1000 bytes) we want to continue anyway.
+        if (getAdjustedEnd() - getAdjustedStart() < bufferSize) {
+          throw new IllegalArgumentException("The provided InputSplit " +
+                  "(" + getAdjustedStart() + ";" + getAdjustedEnd() + "] " +
+                  "is " + (getAdjustedEnd() - getAdjustedStart()) + " bytes which is too small. " +
+                  "(Minimum is " + bufferSize + ")");
+        }
       }
 
       // We MUST have the option of slowing down the reading of data.
