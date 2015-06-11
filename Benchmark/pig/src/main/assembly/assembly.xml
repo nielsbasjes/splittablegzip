@@ -10,7 +10,7 @@
   <fileSets>
     <fileSet>
       <directory>src/main/bash</directory>
-      <outputDirectory>PigDemo-${project.version}/</outputDirectory>
+      <outputDirectory> ${packagedDirectoryName}/</outputDirectory>
       <includes>
         <include>*.sh</include>
       </includes>
@@ -20,7 +20,7 @@
     </fileSet>
     <fileSet>
       <directory>src/main/pig</directory>
-      <outputDirectory>PigDemo-${project.version}/pig</outputDirectory>
+      <outputDirectory> ${packagedDirectoryName}/pig</outputDirectory>
       <includes>
         <include>*.pig</include>
       </includes>
@@ -30,7 +30,7 @@
     </fileSet>
     <fileSet>
       <directory>src/main/resources</directory>
-      <outputDirectory>PigDemo-${project.version}/etc</outputDirectory>
+      <outputDirectory> ${packagedDirectoryName}/etc</outputDirectory>
       <includes>
         <include>*.properties</include>
       </includes>
@@ -43,7 +43,7 @@
     <dependencySet>
       <useProjectArtifact>false</useProjectArtifact>
       <useProjectAttachments>true</useProjectAttachments>
-      <outputDirectory>PigDemo-${project.version}/lib</outputDirectory>
+      <outputDirectory> ${packagedDirectoryName}/lib</outputDirectory>
     </dependencySet>
   </dependencySets>
 </assembly>

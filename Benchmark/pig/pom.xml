@@ -10,6 +10,10 @@
   <packaging>jar</packaging>
   <name>Splittable Gzip codec - Benchmarks - Pig MapReduce</name>
 
+  <properties>
+    <packagedDirectoryName>PigWordcount-${project.version}</packagedDirectoryName>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>nl.basjes.hadoop</groupId>
@@ -61,6 +65,5 @@
 
     </plugins>
   </build>
-
 
 </project>
