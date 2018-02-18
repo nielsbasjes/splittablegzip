@@ -1,4 +1,4 @@
-#Making gzip splittable for Hadoop
+# Making gzip splittable for Hadoop
 
 In many Hadoop production environments you get gzipped files as the raw input. 
 Usually these are Apache HTTPD logfiles. 
@@ -11,7 +11,7 @@ penalty for this scaling out.
 
 This addon for Hadoop makes this possible.
 
-##Benchmark
+## Benchmark
 I did benchmarking jobs to see how this solution scales and performs.
 The software and the results can be found in the [Benchmark](Benchmark) folder.
 
@@ -19,16 +19,16 @@ In general we can say that you win as long as there is unused capacity in your c
 
 ![Graph of the results](Benchmark/Benchmark55.png)
 
-##Requirements
+## Requirements
 First of all this only works with Hadoop 0.21 and up because this depends on 
 the presence of the SplittableCompressionCodec interface.
 So Hadoop 1.x is not yet supported (waiting for [HADOOP-7823][HADOOP-7823]).
 
 I tested it with Hortonworks 2.1.2 and Cloudera CDH 4.5.0.
 
-##Downloads
+## Downloads
 
-###Sources
+### Sources
 Currently it can only be downloaded via github.
 
 [https://github.com/nielsbasjes/splittablegzip][github]
@@ -37,7 +37,7 @@ Running this in the codec directory automatically generates an RPM:
 
     mvn package -Prpm 
 
-###Binary
+### Binary
 For normal projects you can simply download the prebuilt version from maven central.
 So when using maven you can simply add this to your project
 
@@ -47,14 +47,14 @@ So when using maven you can simply add this to your project
       <version>1.2</version>
     </dependency>
 
-##Building
+## Building
 On CDH the build fails if the native gzip could not be loaded for running the unit tests.
 To fix this you need to install the native package and set the environment so it can find them for your platform.
 I.e. Do something like this before starting the build or loading your IDE.
 
    export LD_LIBRARY_PATH=/usr/lib/hadoop-0.20/lib/native/Linux-amd64-64
 
-##Installation
+## Installation
 
 1. Place the jar file in the classpath of your hadoop installation.
 2. Enable this codec and make sure the regular GzipCodec is NOT used. 
@@ -68,8 +68,8 @@ I.e. Do something like this before starting the build or loading your IDE.
    **mapreduce.input.fileinputformat.split.minsize** and/or
    **mapreduce.input.fileinputformat.split.maxsize**.
 
-#Choosing the configuration settings
-##How it works
+# Choosing the configuration settings
+## How it works
 For each "split" the gzipped input file is read from the beginning of the file 
 till the point where the split starts, thus reading, decompressing and 
 discarding (wasting!) everything that is before the start of the split.
@@ -84,7 +84,7 @@ So in general this "splittable" Gzip codec will WASTE CPU time and
 FileSystem IO (HDFS) and probably other system resources (Network) too to
 reduce the "wall clock" time in some real-life situations.
 
-##When is this useful?
+## When is this useful?
 Assume you have a heavy map phase for which the input is a 1GiB Apache httpd logfile. 
 Now assume this map takes 60 minutes of CPU time to run. 
 Then this task will take 60 minutes to run because all of that CPU time must be 
@@ -118,7 +118,7 @@ Because all tasks run in parallel the running time in this example would be
 We have wasted about 6 minutes of CPU time and completed the job in about 30% 
 of the original wall clock time.
 
-##Tuning for optimal performance and scalability.
+## Tuning for optimal performance and scalability.
 The overall advise is to **EXPERIMENT** with the settings and do benchmarks.
 
 Remember that:
@@ -155,7 +155,7 @@ A possible optimum:
   Don't be surprised if the optimal setting for the split size turns out to be 
   500MiB or even 1GiB.
 
-#Alternative approaches
+# Alternative approaches
 
 Always remember that there are alternative approaches:
 
@@ -164,7 +164,7 @@ Always remember that there are alternative approaches:
 * Decompress the original gzipped file and compress using a different splittable codec.
   For example by using bzip2 or not compressing at all.
 
-#Implementation notes
+# Implementation notes
 There were two major hurdles that needed to be solved to make this work:
 
 * **The reported position depends on the read blocksize.**
@@ -221,12 +221,12 @@ There were two major hurdles that needed to be solved to make this work:
   end: we find the start of a split by running over the "part that must be discarded" 
   as-if it is a split. 
 
-#History
+# History
 Originally this feature was submitted to be part of the core of Hadoop.
 
 See: Gzip splittable ([HADOOP-7076][HADOOP-7076]).
 
-#Created by
+# Created by
 This idea was conceived and implemented by [Niels Basjes][nielsbasjes].
 
 [github]: https://github.com/nielsbasjes/splittablegzip "Github"
