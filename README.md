@@ -68,6 +68,11 @@ I.e. Do something like this before starting the build or loading your IDE.
    **mapreduce.input.fileinputformat.split.minsize** and/or
    **mapreduce.input.fileinputformat.split.maxsize**.
 
+# Usage examples
+- [Java Apache Hadoop MapReduce](README-JavaMapReduce.md)
+- [Apache Pig](README-Pig.md)
+- [Apache Spark](README-Spark.md)
+
 # Choosing the configuration settings
 ## How it works
 For each "split" the gzipped input file is read from the beginning of the file 
