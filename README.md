@@ -232,4 +232,4 @@ This idea was conceived and implemented by [Niels Basjes][nielsbasjes].
 [github]: https://github.com/nielsbasjes/splittablegzip "Github"
 [HADOOP-7076]: https://issues.apache.org/jira/browse/HADOOP-7076 "JIRA: Splittable Gzip" 
 [HADOOP-7823]: https://issues.apache.org/jira/browse/HADOOP-7823 "JIRA: Splittable Bzip2"
-[nielsbasjes]: http://niels.basjes.nl "The homepage of Niels Basjes"
+[nielsbasjes]: https://niels.basjes.nl "The homepage of Niels Basjes"

@@ -1,6 +1,6 @@
-/**
+/*
  * Making GZip Splittable for Apache Hadoop
- * Copyright (C) 2011-2014 Niels Basjes
+ * Copyright (C) 2011-2019 Niels Basjes
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,7 +51,7 @@ public class TestSplittableCodecSeams {
   private static final Log LOG = LogFactory
       .getLog(TestSplittableCodecSeams.class);
 
-  final int BUFFER_SIZE = 4096;
+  private final int BUFFER_SIZE = 4096;
 
   /**
    * Test with a series of files with several fixed sizes in trailing gibberish.
@@ -126,8 +126,12 @@ public class TestSplittableCodecSeams {
   @Test(expected = IllegalArgumentException.class)
   public void testSplittableGzipCodecSeamsVerySmallFile() throws IOException {
     int splitSize = 2000;
-    validateSplitSeamsWithSyntheticFile(SplittableGzipCodec.class,
-            1, 1, 0, splitSize, 4096);
+    try {
+        validateSplitSeamsWithSyntheticFile(SplittableGzipCodec.class,
+            1, 1, 0, splitSize, splitSize);
+    } catch (Exception e) {
+        throw e;
+    }
   }
 
   // ------------------------------------------

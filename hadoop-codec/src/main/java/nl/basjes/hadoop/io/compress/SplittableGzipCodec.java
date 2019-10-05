@@ -1,6 +1,6 @@
 /**
  * Making GZip Splittable for Apache Hadoop
- * Copyright (C) 2011-2014 Niels Basjes
+ * Copyright (C) 2011-2019 Niels Basjes
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -269,9 +269,9 @@ public class SplittableGzipCodec extends GzipCodec implements
     // of info when this many bytes near the relevant areas.
     private static final int TRACE_REPORTING_DISTANCE = 64;
 
-    private final ThrottleableDecompressorStream in;
-    private final int crawlDistance;
-    private final int bufferSize;
+    private final ThrottleableDecompressorStream throttleableDecompressorStream;
+    private final int                            crawlDistance;
+    private final int                            bufferSize;
 
     // -------------------------------------------
 
@@ -294,9 +294,9 @@ public class SplittableGzipCodec extends GzipCodec implements
       // We MUST have the option of slowing down the reading of data.
       // This check will fail if someone creates a subclass that breaks this.
       if (inputStream instanceof ThrottleableDecompressorStream) {
-        this.in = (ThrottleableDecompressorStream) inputStream;
+        this.throttleableDecompressorStream = (ThrottleableDecompressorStream) inputStream;
       } else {
-        this.in = null; // Permanently cripple this instance ('in' is final) .
+        this.throttleableDecompressorStream = null; // Permanently cripple this instance ('in' is final) .
         throw new IOException("The SplittableGzipCodec relies on"
             + " functionality in the ThrottleableDecompressorStream class.");
       }
@@ -393,7 +393,7 @@ public class SplittableGzipCodec extends GzipCodec implements
      * @return number of bytes that have been read from the compressed input.
      */
     private long getRealPos() {
-      return in.getBytesRead();
+      return throttleableDecompressorStream.getBytesRead();
     }
 
     // -------------------------------------------
@@ -461,10 +461,10 @@ public class SplittableGzipCodec extends GzipCodec implements
       }
 
       // Set the input read step to tune the disk reads to the wanted speed.
-      in.setReadStep(maxBytesToRead);
+      throttleableDecompressorStream.setReadStep(maxBytesToRead);
 
       // Actually read the information.
-      final int bytesRead = in.read(b, off, maxBytesToRead);
+      final int bytesRead = throttleableDecompressorStream.read(b, off, maxBytesToRead);
 
       // Debugging facility
       if (LOG.isTraceEnabled()) {
@@ -498,14 +498,14 @@ public class SplittableGzipCodec extends GzipCodec implements
 
     @Override
     public void resetState() throws IOException {
-      in.resetState();
+      throttleableDecompressorStream.resetState();
     }
 
     // -------------------------------------------
 
     @Override
     public int read() throws IOException {
-      return in.read();
+      return throttleableDecompressorStream.read();
     }
 
     // -------------------------------------------
