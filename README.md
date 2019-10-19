@@ -20,9 +20,8 @@ In general we can say that you win as long as there is unused capacity in your c
 ![Graph of the results](Benchmark/Benchmark55.png)
 
 ## Requirements
-First of all this only works with Hadoop 0.21 and up because this depends on 
+First of all this only works with Hadoop 1.1.0 and up because this depends on 
 the presence of the SplittableCompressionCodec interface.
-So Hadoop 1.x is not yet supported (waiting for [HADOOP-7823][HADOOP-7823]).
 
 I tested it with Hortonworks 2.1.2 and Cloudera CDH 4.5.0.
 
@@ -236,5 +235,4 @@ This idea was conceived and implemented by [Niels Basjes][nielsbasjes].
 
 [github]: https://github.com/nielsbasjes/splittablegzip "Github"
 [HADOOP-7076]: https://issues.apache.org/jira/browse/HADOOP-7076 "JIRA: Splittable Gzip" 
-[HADOOP-7823]: https://issues.apache.org/jira/browse/HADOOP-7823 "JIRA: Splittable Bzip2"
 [nielsbasjes]: http://niels.basjes.nl "The homepage of Niels Basjes"

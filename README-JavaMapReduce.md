@@ -20,4 +20,4 @@ and then before actually running the job you set the configuration using somethi
     job.getConfiguration().setLong("mapreduce.input.fileinputformat.split.maxsize", 5000000000);
 
 
-NOTE: The ORIGINAL GzipCodec may NOT be in the list of compression codec anymore !
+NOTE: The ORIGINAL GzipCodec may NOT be in the list of compression codecs anymore !
