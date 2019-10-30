@@ -1,18 +1,18 @@
-#Why?
-People have asked me to provide some benchmarking information because theyn were skeptical about the advantages of this codec.
+# Why?
+People have asked me to provide some benchmarking information because they were skeptical about the advantages of this codec.
 
 So this project is simply a WordCount implementation that runs the same file with various settings for this codec and (as a reference) against the default GzipCodec.
 
-#Input
-I took the list of installed rpms on my machine, replaced the '.' and '-' with ' ' and concatenated ithe gzipped version of this 100000 times.
+# Input
+I took the list of installed rpms on my machine, replaced the '.' and '-' with ' ' and concatenated the gzipped version of this 100000 times.
 The result was a file that was 1101900000 bytes in size (i.e. just below 1.1GB).
 
-#The cluster
-The cluster I ran this on is a series of 8 old developer workstations. 
+# The cluster
+The cluster I ran this on is a series of 8 old developer workstations.
 Master: 4 core CPU, single disk.
 Workers: 7 systems (6x4 core, 1x2 core), all have a single disk.
 
-Note that these systems do NOT have idential specifications. So in the below tables when running only a few mappers you see that 'it matters' which of these system was actually runnin that specific mapper.
+Note that these systems do NOT have identical specifications. So in the below tables when running only a few mappers you see that 'it matters' which of these system was actually running that specific mapper.
 
 Given the yarn config in place on this cluster can run at most 12 mappers simultaneously.
 
@@ -20,15 +20,15 @@ This cluster was fully idle during all benchmark runs.
 
 All output files were checked and resulted in the same md5 of the output file.
 
-#Results
+# Results
 
-#Conclusions
+# Conclusions
 As long there is spare CPU capacity the solution allows for a very good scaling of the processing speed.
 A file that would normally take about 24 minutes to 'wordcount' only takes about 3 minutes.
 
-After the maximal paralelisation point (12) we see that the processing time jumps up and stays there. This can be explained by the fact that only after the first mapper of the 12 mappers is finished the 13th can start.
+After the maximal parallelization point (12) we see that the processing time jumps up and stays there. This can be explained by the fact that only after the first mapper of the 12 mappers is finished the 13th can start.
 
-##A 5.5 GB input file doing a wordcount
+## A 5.5 GB input file doing a wordcount
 
 ![Graph of the results](Benchmark55.png)
 
@@ -93,7 +93,7 @@ Splitsize | Splits | Elapsed | Avg. Map Time | Total Map Time
 
 
 
-##A 1.1 GB input file doing a wordcount.
+## A 1.1 GB input file doing a wordcount.
 
 On a single machine simply running a `gzip -t <file>` takes about 45 seconds. So in general we can say that the longest running mapper cannot get below the 45 seconds.
 
@@ -153,7 +153,8 @@ GzipCodec | 1 | 1401 | 1393 | 1393
 22487756 | 49 | 270 | 51 | 2499 
 22038001 | 50 | 258 | 48 | 2400 
 
-##A 220 MB input file doing a wordcount.
+## A 220 MB input file doing a wordcount.
+
 Splitsize | Splits | Elapsed | Avg. Map Time | Total Map Time
  --:|--:|--:|--:|--:|
 GzipCodec |  1 | 274 sec | 267 sec |  267 sec
@@ -209,7 +210,7 @@ GzipCodec |  1 | 274 sec | 267 sec |  267 sec
   4407601 | 50 |  85 sec |  13 sec |  650 sec
 
 
-##A 140 MB input file doing a wordcount.
+## A 140 MB input file doing a wordcount.
 
 Splitsize | Splits | Elapsed | Avg. Map Time | Total Map Time
  --:|--:|--:|--:|--:|
