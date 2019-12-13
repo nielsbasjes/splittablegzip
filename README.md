@@ -43,7 +43,7 @@ So when using maven you can simply add this to your project
     <dependency>
       <groupId>nl.basjes.hadoop</groupId>
       <artifactId>splittablegzip</artifactId>
-      <version>1.2</version>
+      <version>1.3</version>
     </dependency>
 
 ## Building
