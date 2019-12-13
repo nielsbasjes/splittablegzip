@@ -16,10 +16,6 @@
  */
 package nl.basjes.hadoop.io.compress;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.Random;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
@@ -37,6 +33,12 @@ import org.apache.hadoop.util.LineReader;
 import org.apache.hadoop.util.ReflectionUtils;
 import org.junit.Test;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.Random;
+
+import static java.nio.charset.StandardCharsets.US_ASCII;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
@@ -361,12 +363,7 @@ public class TestSplittableCodecSeams {
       LOG.info("Skipped line of size " + newSize + " at pos "
           + (in.getPos() - newSize));
     }
-    if (newSize == 0) {
-      value = null;
-      return false;
-    } else {
-      return true;
-    }
+    return newSize != 0;
   }
 
   // ------------------------------------------
@@ -404,7 +401,7 @@ public class TestSplittableCodecSeams {
             + (trailingSizeJitter > 0 ? RAND
                 .nextInt(trailingSizeJitter) : 0), randomizeEveryNChars) + "\n";
         // There must be a simpler way to output ACSII instead of 2 byte UNICODE
-        out.writeBytes(new String(line.getBytes("UTF-8"), "US-ASCII"));
+        out.writeBytes(new String(line.getBytes(UTF_8), US_ASCII));
       }
     } finally {
       IOUtils.cleanup(LOG, out);
