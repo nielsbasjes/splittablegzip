@@ -7,9 +7,8 @@
   <property>
     <name>io.compression.codecs</name>
     <value>org.apache.hadoop.io.compress.DefaultCodec,nl.basjes.hadoop.io.compress.SplittableGzipCodec,org.apache.hadoop.io.compress.BZip2Codec,org.apache.hadoop.io.compress.DeflateCodec,org.apache.hadoop.io.compress.SnappyCodec,org.apache.hadoop.io.compress.Lz4Codec</value>
-    <description>A list of the compression codec classes that can be used 
-               for compression/decompression.</description>
-</property>
+    <description>A list of the compression codec classes that can be used for compression/decompression.</description>
+  </property>
 
   <!-- How big must the split be? -->
   <property>

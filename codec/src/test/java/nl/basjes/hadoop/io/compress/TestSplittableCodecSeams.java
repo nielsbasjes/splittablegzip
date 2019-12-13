@@ -1,6 +1,6 @@
 /**
  * Making GZip Splittable for Apache Hadoop
- * Copyright (C) 2011-2014 Niels Basjes
+ * Copyright (C) 2011-2019 Niels Basjes
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -381,7 +381,7 @@ public class TestSplittableCodecSeams {
       final int trailingSizeJitter,
       final int randomizeEveryNChars) throws IOException {
 
-    RAND.setSeed(1); // Make the tests better reproducable
+    RAND.setSeed(1); // Make the tests better reproducible
 
     final FileSystem fs = FileSystem.getLocal(conf);
     final SplittableCompressionCodec codec = ReflectionUtils.newInstance(

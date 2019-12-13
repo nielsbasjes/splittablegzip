@@ -17,7 +17,7 @@
     <project.build.outputEncoding>UTF-8</project.build.outputEncoding>
     <hadoop.version>2.3.0</hadoop.version>
   </properties>
-  
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -36,7 +36,7 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.12</version>
+      <version>1.7.29</version>
     </dependency>
 
   </dependencies>
@@ -96,7 +96,7 @@
         </plugins>
       </build>
     </profile>
-    
+
     <profile>
       <id>rpm</id>
       <build>
