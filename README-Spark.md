@@ -41,7 +41,7 @@ if __name__ == '__main__':
 Run this script as follows:
 
 ```sh
-spark-submit --packages "nl.basjes.hadoop:splittablegzip:1.2" splittable-gzip.py
+spark-submit --packages "nl.basjes.hadoop:splittablegzip:1.3" splittable-gzip.py
 ```
 
 Here's what the Spark UI looks like when running this script against a 20 GB gzip file on a laptop:
