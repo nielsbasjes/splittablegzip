@@ -1,0 +1,55 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>nl.basjes.splittablegzip</groupId>
+  <artifactId>splittablegzip-parent</artifactId>
+  <version>1.4-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>Splittable Gzip: </name>
+
+  <description>A Hadoop specific enhancement of GZip that allows running a single gzipped file on multiple mappers.</description>
+  <url>https://github.com/nielsbasjes/splittablegzip</url>
+
+  <properties>
+    <target.java.version>1.8</target.java.version>
+    <target.java.release>8</target.java.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.build.outputEncoding>UTF-8</project.build.outputEncoding>
+    <maven.compiler.source>${target.java.version}</maven.compiler.source>
+    <maven.compiler.target>${target.java.version}</maven.compiler.target>
+
+    <hadoop.version>2.3.0</hadoop.version>
+  </properties>
+
+  <modules>
+    <module>codec</module>
+    <module>Benchmark/javamr</module>
+  </modules>
+
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>Niels Basjes</name>
+      <email>niels@basjes.nl</email>
+      <roles>
+        <role>Architect</role>
+        <role>Developer</role>
+      </roles>
+      <timezone>Europe/Amsterdam</timezone>
+    </developer>
+  </developers>
+
+  <scm>
+    <developerConnection>scm:git:.</developerConnection>
+    <connection>https://github.com/nielsbasjes/splittablegzip.git</connection>
+    <url>https://github.com/nielsbasjes/splittablegzip</url>
+  </scm>
+
+</project>

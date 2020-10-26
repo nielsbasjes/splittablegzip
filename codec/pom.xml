@@ -2,27 +2,25 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
+  <parent>
+    <groupId>nl.basjes.splittablegzip</groupId>
+    <artifactId>splittablegzip-parent</artifactId>
+    <version>1.4-SNAPSHOT</version>
+  </parent>
+
   <groupId>nl.basjes.hadoop</groupId>
   <artifactId>splittablegzip</artifactId>
-  <version>1.4-SNAPSHOT</version>
   <packaging>jar</packaging>
-  <name>Splittable Gzip codec</name>
+  <name>Splittable Gzip: Hadoop codec</name>
 
   <description>A Hadoop specific enhancement of GZip that allows running a single gzipped file on multiple mappers.</description>
   <url>https://github.com/nielsbasjes/splittablegzip</url>
-
-  <properties>
-    <jdkLevel>1.7</jdkLevel>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.build.outputEncoding>UTF-8</project.build.outputEncoding>
-    <hadoop.version>2.3.0</hadoop.version>
-  </properties>
 
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.12</version>
+      <version>4.13.1</version>
       <scope>test</scope>
     </dependency>
 
@@ -65,7 +63,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
-            <version>2.1.2</version>
+            <version>3.2.1</version>
             <executions>
               <execution>
                 <id>attach-sources</id>
@@ -81,7 +79,7 @@
             <!-- explicitly define maven-deploy-plugin after other to force exec order -->
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-deploy-plugin</artifactId>
-            <version>2.8.1</version>
+            <version>3.0.0-M1</version>
             <executions>
               <execution>
                 <id>deploy</id>
@@ -172,15 +170,15 @@ too to reduce the "wall clock" time in some real-life situations.
   <build>
     <plugins>
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.0</version>
-        <configuration>
-          <source>${jdkLevel}</source>
-          <target>${jdkLevel}</target>
-        </configuration>
-      </plugin>
+<!--      <plugin>-->
+<!--        <groupId>org.apache.maven.plugins</groupId>-->
+<!--        <artifactId>maven-compiler-plugin</artifactId>-->
+<!--        <version>3.0</version>-->
+<!--        <configuration>-->
+<!--          <source>${target.java.version}</source>-->
+<!--          <target>${target.java.version}</target>-->
+<!--        </configuration>-->
+<!--      </plugin>-->
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -192,6 +190,9 @@ too to reduce the "wall clock" time in some real-life situations.
             <goals>
               <goal>jar</goal>
             </goals>
+            <configuration>
+              <source>${target.java.release}</source>
+            </configuration>
           </execution>
         </executions>
       </plugin>
