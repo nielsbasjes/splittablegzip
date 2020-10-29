@@ -4,7 +4,7 @@
 Thanks to [Nicholas Chammas](https://github.com/nchammas) for contributing this documentation.
 
 # Common problem for Spark users
-Apparently the fact that GZipped files are not splittable is also in the Spark arena a recurring problem as you can see 
+Apparently the fact that GZipped files are not splittable is also in the Spark arena a recurring problem as you can see
 in this [Spark Jira ticket](https://issues.apache.org/jira/browse/SPARK-29102?focusedCommentId=16932921&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-16932921) and
  these two questions on StackOverflow [Question 1](https://stackoverflow.com/q/28127119/877069) [Question 2](https://stackoverflow.com/q/27531816/877069).
 

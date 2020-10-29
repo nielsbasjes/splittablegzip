@@ -1,4 +1,4 @@
-The maven release plugin turned out to be too hard to handle. 
+The maven release plugin turned out to be too hard to handle.
 So we do it manually.
 
 # Ensure all has been committed
@@ -31,8 +31,8 @@ git push origin v${RELEASEVERSION}
 # These two profiles are defined in ~/.m2/settings.xml
 git checkout v${RELEASEVERSION}
 cd codec
-mvn clean deploy -Prelease -Pdeploy-local 
+mvn clean deploy -Prelease -Pdeploy-local
 
-VERIFY If this all looks good 
+VERIFY If this all looks good
 
 mvn clean deploy -Prelease -Pdeploy-sonatype

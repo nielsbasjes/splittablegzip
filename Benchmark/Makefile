@@ -3,10 +3,10 @@
 IoBytesPerChecksum = 512
 InputFile = words-20K.txt.gz
 
-all: 
+all:
 	@echo "Don't use the makefile directly. Run the ./run.sh instead."
 
-clean:: 
+clean::
 	-rm -f wordcount-normal.txt
 
 wordcount-normal.txt: $(InputFile) target/wordcount-1.0-job.jar
@@ -24,7 +24,7 @@ wordcount-%.txt: $(InputFile) target/wordcount-1.0-job.jar
 	hdfs dfs -text wordcount-$${SPLITS}/part-r-* | sort > wordcount-$${SPLITS}.txt ; \
 	)
 
-clean:: 
+clean::
 	-rm -f wordcount-*.txt
 
 words.txt.gz:
