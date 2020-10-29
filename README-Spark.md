@@ -8,7 +8,7 @@ Apparently the fact that GZipped files are not splittable is also in the Spark a
 in this [Spark Jira ticket](https://issues.apache.org/jira/browse/SPARK-29102?focusedCommentId=16932921&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-16932921) and
  these two questions on StackOverflow [Question 1](https://stackoverflow.com/q/28127119/877069) [Question 2](https://stackoverflow.com/q/27531816/877069).
 
-It turns out that this libray works with Apache Spark without modification.
+It turns out that this library works with Apache Spark without modification.
 
 # Using it
 Here is an example, which was tested against Apache Spark 2.4.4 using the Python DataFrame API:
