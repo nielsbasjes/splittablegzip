@@ -23,7 +23,7 @@
   </properties>
 
   <modules>
-    <module>codec</module>
+    <module>hadoop-codec</module>
     <module>Benchmark/javamr</module>
   </modules>
 
