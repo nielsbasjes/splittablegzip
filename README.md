@@ -32,10 +32,6 @@ Currently it can only be downloaded via github.
 
 [https://github.com/nielsbasjes/splittablegzip][github]
 
-Running this in the codec directory automatically generates an RPM:
-
-    mvn package -Prpm 
-
 ### Binary
 For normal projects you can simply download the prebuilt version from maven central.
 So when using maven you can simply add this to your project
