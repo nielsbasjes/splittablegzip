@@ -1,4 +1,4 @@
-/**
+/*
  * Making GZip Splittable for Apache Hadoop
  * Copyright (C) 2011-2019 Niels Basjes
  *

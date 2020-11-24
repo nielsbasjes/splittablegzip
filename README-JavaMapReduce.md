@@ -6,7 +6,7 @@ In Maven you would simply add this dependency
     <dependency>
       <groupId>nl.basjes.hadoop</groupId>
       <artifactId>splittablegzip</artifactId>
-      <version>1.2</version>
+      <version>1.3</version>
     </dependency>
 
 Then in Java you would create an instance of the Job that you are going to run
