@@ -3,19 +3,30 @@
 # Thanks !
 Thanks to [Nicholas Chammas](https://github.com/nchammas) for contributing this documentation.
 
+# Important
+The current implementation of Spark (3.0.1) creating file splits DOES NOT have an option (yet) to ensure a minimum split size.
+An important effect of this is that you will sometimes get an error that the last split of your file is too small.
+The error you get looks like this:
+
+`java.lang.IllegalArgumentException: The provided InputSplit (562600;562687] is 87 bytes which is too small. (Minimum is 65536)`
+
+The problem here is that the size of the last split is really `${fileSize} % ${maxSplitBytes}`
+
+By setting the maxPartitionBytes to 1 byte below the size of a test file I was even able to get a split of only 1 byte.
+
+Now if you run into such a situation I recommend trying to play with the `spark.sql.files.maxPartitionBytes` setting
+to ensure that the remainder of the mentioned division stays in the valid range.
+
+This is by no means a real solution but at this point in time it seems the only option available.
+
+I have submitted a request/proposal for a good solution at the Spark project: https://issues.apache.org/jira/browse/SPARK-33534
+
 # Common problem for Spark users
 Apparently the fact that GZipped files are not splittable is also in the Spark arena a recurring problem as you can see
 in this [Spark Jira ticket](https://issues.apache.org/jira/browse/SPARK-29102?focusedCommentId=16932921&page=com.atlassian.jira.plugin.system.issuetabpanels:comment-tabpanel#comment-16932921) and
  these two questions on StackOverflow [Question 1](https://stackoverflow.com/q/28127119/877069) [Question 2](https://stackoverflow.com/q/27531816/877069).
 
 It turns out that this library works with Apache Spark without modification.
-
-**NOTE: The current implementation of Spark (3.0.1) creating file splits DOES NOT have an option (yet)
- to ensure a minimum split size.
- An important effect of this is that you will sometimes get an error that the last split of
- your file is too small.
- By setting the maxPartitionBytes to 1 byte below the size of a test file I was even able to get a split of only 1 byte.**
- See: https://issues.apache.org/jira/browse/SPARK-33534
 
 # Using it
 Here is an example, which was tested against Apache Spark 2.4.4 using the Python DataFrame API:
