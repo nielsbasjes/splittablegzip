@@ -10,6 +10,13 @@ in this [Spark Jira ticket](https://issues.apache.org/jira/browse/SPARK-29102?fo
 
 It turns out that this library works with Apache Spark without modification.
 
+**NOTE: The current implementation of Spark (3.0.1) creating file splits DOES NOT have an option (yet)
+ to ensure a minimum split size.
+ An important effect of this is that you will sometimes get an error that the last split of
+ your file is too small.
+ By setting the maxPartitionBytes to 1 byte below the size of a test file I was even able to get a split of only 1 byte.**
+ See: https://issues.apache.org/jira/browse/SPARK-33534
+
 # Using it
 Here is an example, which was tested against Apache Spark 2.4.4 using the Python DataFrame API:
 
