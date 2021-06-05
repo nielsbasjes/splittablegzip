@@ -19,7 +19,7 @@
     <maven.compiler.source>${target.java.version}</maven.compiler.source>
     <maven.compiler.target>${target.java.version}</maven.compiler.target>
 
-    <hadoop.version>2.3.0</hadoop.version>
+    <hadoop.version>2.10.1</hadoop.version>
   </properties>
 
   <modules>
