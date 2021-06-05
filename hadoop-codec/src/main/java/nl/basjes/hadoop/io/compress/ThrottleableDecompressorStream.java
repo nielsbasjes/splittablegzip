@@ -82,7 +82,7 @@ public class ThrottleableDecompressorStream extends DecompressorStream {
    * Reads the compressed input into the buffer.
    * This Override limits the number of bytes read to "readStep" and records
    * how many bytes have been read so far.
-   * @throws IOException
+   * @throws IOException In case of an IO problem
    */
   @Override
   protected int getCompressedData() throws IOException {
