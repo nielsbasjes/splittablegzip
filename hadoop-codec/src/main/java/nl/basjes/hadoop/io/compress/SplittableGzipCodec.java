@@ -107,7 +107,7 @@ import org.slf4j.LoggerFactory;
  * <b>mapreduce.input.fileinputformat.split.minsize</b> and/or
  * <b>mapreduce.input.fileinputformat.split.maxsize</b>.</li>
  * </ol>
- * <b>Tuning for optimal performance and scalability.</b><br/>
+ * <b>Tuning for optimal performance and scalability.</b><br>
  * The overall advise is to <i>EXPERIMENT</i> with the settings and <i>do
  * benchmarks</i>.<br>
  * Remember that:
@@ -153,7 +153,7 @@ import org.slf4j.LoggerFactory;
  * the pieces before offering them to Hadoop.<br>
  * For example: http://stackoverflow.com/questions/3960651</li>
  * <li>Decompress the original gzipped file and compress using a different
- * splittable codec.<br/>
+ * splittable codec.<br>
  * For example {@link org.apache.hadoop.io.compress.BZip2Codec} or not
  * compressing at all</li>
  * </ol>
