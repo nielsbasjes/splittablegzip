@@ -1,5 +1,13 @@
 # Making gzip splittable for Hadoop
 
+[![Github actions Build status](https://img.shields.io/github/actions/workflow/status/nielsbasjes/splittablegzip/build.yml?branch=main)](https://github.com/nielsbasjes/splittablegzip/actions)
+[![License](https://img.shields.io/:license-apache-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0.html)
+[![Maven Central](https://img.shields.io/maven-central/v/nl.basjes.hadoop/splittablegzip.svg)](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22nl.basjes.hadoop%22)
+[![If this project has business value for you then don't hesitate to support me with a small donation.](https://img.shields.io/badge/Sponsor%20me-via%20Github-red.svg)](https://github.com/sponsors/nielsbasjes)
+[![If this project has business value for you then don't hesitate to support me with a small donation.](https://img.shields.io/badge/Donations-via%20Paypal-red.svg)](https://www.paypal.me/nielsbasjes)
+
+[//]: # ([![Coverage Status]&#40;https://img.shields.io/codecov/c/github/nielsbasjes/splittablegzip&#41;]&#40;https://app.codecov.io/gh/nielsbasjes/splittablegzip&#41;)
+
 In many Hadoop production environments you get gzipped files as the raw input.
 Usually these are Apache HTTPD logfiles.
 When putting these gzipped files into Hadoop you are stuck with exactly 1 map
