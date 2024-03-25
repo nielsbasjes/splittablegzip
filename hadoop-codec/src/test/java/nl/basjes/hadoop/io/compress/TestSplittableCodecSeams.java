@@ -404,7 +404,7 @@ public class TestSplittableCodecSeams {
         out.writeBytes(new String(line.getBytes(UTF_8), US_ASCII));
       }
     } finally {
-      IOUtils.cleanup(LOG, out);
+      IOUtils.cleanupWithLogger(null, out);
       CodecPool.returnCompressor(cmp);
     }
     return file;
