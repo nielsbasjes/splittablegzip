@@ -79,7 +79,7 @@
             <!-- explicitly define maven-deploy-plugin after other to force exec order -->
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-deploy-plugin</artifactId>
-            <version>3.1.1</version>
+            <version>3.1.2</version>
             <executions>
               <execution>
                 <id>deploy</id>
@@ -129,7 +129,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-pmd-plugin</artifactId>
-        <version>3.21.2</version>
+        <version>3.22.0</version>
         <configuration>
           <linkXRef>true</linkXRef>
           <!-- <rulesets> <ruleset> /pmd-ruleset.xml </ruleset> </rulesets> -->
