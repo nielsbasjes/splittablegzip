@@ -99,16 +99,6 @@
   <build>
     <plugins>
 
-<!--      <plugin>-->
-<!--        <groupId>org.apache.maven.plugins</groupId>-->
-<!--        <artifactId>maven-compiler-plugin</artifactId>-->
-<!--        <version>3.0</version>-->
-<!--        <configuration>-->
-<!--          <source>${target.java.version}</source>-->
-<!--          <target>${target.java.version}</target>-->
-<!--        </configuration>-->
-<!--      </plugin>-->
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -120,7 +110,7 @@
               <goal>jar</goal>
             </goals>
             <configuration>
-              <source>${target.java.release}</source>
+              <source>${target.java.version}</source>
             </configuration>
           </execution>
         </executions>

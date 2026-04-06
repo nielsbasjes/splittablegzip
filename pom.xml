@@ -12,8 +12,7 @@
   <url>https://github.com/nielsbasjes/splittablegzip</url>
 
   <properties>
-    <target.java.version>1.8</target.java.version>
-    <target.java.release>8</target.java.release>
+    <target.java.version>17</target.java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.build.outputEncoding>UTF-8</project.build.outputEncoding>
     <maven.compiler.source>${target.java.version}</maven.compiler.source>
