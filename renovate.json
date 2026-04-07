@@ -1,6 +1,7 @@
 {
   "extends": [
-    "config:base"
+    "config:base",
+    "config:best-practices"
   ],
   "packageRules": [
     {
@@ -8,12 +9,6 @@
       "packagePatterns": ["*"],
       "allowedVersions": "!/^(?i).*[-_\\.](Alpha|Beta|RC|M|EA|Snap|snapshot|jboss|atlassian)[-_\\.]?[0-9]?.*$/",
       "groupName": "all dependencies"
-    },
-    {
-      "matchDepTypes": [
-        "action"
-      ],
-      "pinDigests": true
     }
   ]
 }
